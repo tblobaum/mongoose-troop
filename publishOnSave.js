@@ -7,7 +7,6 @@
 
 function mongoosePublishOnSave (schema, options) {
   options = options || {}
-  Publish = options.redis
   
   schema.pre('save', function (next) {
     this.publish()
@@ -15,6 +14,8 @@ function mongoosePublishOnSave (schema, options) {
   })
   
   schema.method('publish', function () {
+    var Publish = options.redis
+
     if (this._id && this._owner) {
       if (options.debug) {
         console.log('publishing to owner of', 
