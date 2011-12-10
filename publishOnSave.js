@@ -1,6 +1,6 @@
 
 /*!
- * Analyticker - Models - Mongoose Plugins
+ * Analytics Machine - Models - Mongoose Plugins
  * Copyright(c) Thomas Blobaum
  * MIT Licensed
  */

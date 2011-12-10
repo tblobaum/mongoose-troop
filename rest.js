@@ -1,6 +1,6 @@
 
 /*!
- * Analyticker - Mongoose Rest
+ * Analytics Machine - Mongoose Rest
  * Copyright(c) Thomas Blobaum
  * MIT Licensed
  */

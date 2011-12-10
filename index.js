@@ -1,6 +1,6 @@
 
 /*!
- * Analyticker - Plugins
+ * Analytics Machine - Plugins
  * Copyright(c) Thomas Blobaum
  * MIT Licensed
  */
