@@ -14,6 +14,11 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mongoose": "~2.4.1",
+    "redis": "~0.7.1",
+    "underscore": "~1.2.3",
+    "directory": "0.0.6"
+  },
   "devDependencies": {}
 }
