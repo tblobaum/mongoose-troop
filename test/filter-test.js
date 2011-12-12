@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var filter = require('../lib/filter')
+var filter = require('../lib/filter')(mongoose,{debug:true})
 
 mongoose.connect('mongodb://localhost/mongoose_troop')
 
@@ -16,11 +16,11 @@ var BlogPost = new Schema({
 
 var Blog = mongoose.model('BlogPost',BlogPost)
 
-var blog = new Blog()
-blog.title = "hello world 3"
+var blog = new Blog({doesntBelong: 'filter this out'})
+blog.title = "Testing doesn't Belong Test case 3 with Filter"
 
 var options = {debug: true}
-filter(BlogPost,options)
+blog.filter()
 
 
 blog.save(function(err){
