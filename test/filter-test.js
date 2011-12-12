@@ -1,4 +1,6 @@
 var mongoose = require('mongoose')
+var filter = require('../lib/filter')
+
 mongoose.connect('mongodb://localhost/mongoose_troop')
 
 var Schema = mongoose.Schema
@@ -15,7 +17,10 @@ var BlogPost = new Schema({
 var Blog = mongoose.model('BlogPost',BlogPost)
 
 var blog = new Blog()
-blog.title = "hello world 1"
+blog.title = "hello world 3"
+
+var options = {debug: true}
+filter(BlogPost,options)
 
 
 blog.save(function(err){
@@ -23,4 +28,6 @@ blog.save(function(err){
   console.log('successful..')
   process.exit(0)
 })
+
+
 
