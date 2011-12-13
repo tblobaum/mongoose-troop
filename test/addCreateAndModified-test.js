@@ -17,7 +17,7 @@ var BlogPost = new Schema({
   , body   : String
 })
 
-// Registering the timestamp plugin with mongoose
+// Registering the addCreatedAndModified plugin with mongoose
 // Note: Must be defined before creating schema object 
 mongoose.plugin(timestamp,{debug: true})
 
