@@ -24,7 +24,7 @@ Mongoose.plugin(Troop.filter)
 
 Mongoose.model('User', User)
 
-````
+````;
 
 
 authenticate (alias basicAuth)
@@ -87,7 +87,7 @@ new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, {$set : { na
     if (e) console.log(e)
 })
 
-````
+````;
 
 timestamp (alias addCreatedAndModified)
 =========
@@ -102,26 +102,35 @@ example needed.
 merge
 =====
 Merge JSON into your object more easily.
+
 ```javascript
+
 instance.merge({title:'A new title', description:'A new description'}).save()
-````
+
+````;
 
 publishOnSave
 =============
 Pass in a redis publisher connection to publish a model to redis everytime it is saved. Can intuitively publish only dirty/new data. Will eventually work with zeromq.
 
 You can also explicitly publish a model instance.
+
 ```javascript
+
 mongoose.plugin(troop.publishOnSave, {redis:redis})
 instance.publish()
-````
+
+````;
 
 filter
 ======
 Filter out properties which are not in your schema. The filter plugin will become obsolete in Mongoose v3.x
+
 ```javascript
+
 instance.filter().save()
-````
+
+````;
 
 rest
 ====
