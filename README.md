@@ -24,7 +24,7 @@ Mongoose.plugin(Troop.filter)
 
 Mongoose.model('User', User)
 
-````;
+````
 
 
 authenticate (alias basicAuth)
@@ -87,7 +87,7 @@ new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, {$set : { na
     if (e) console.log(e)
 })
 
-````;
+````
 
 timestamp (alias addCreatedAndModified)
 =========
@@ -107,7 +107,7 @@ Merge JSON into your object more easily.
 
 instance.merge({title:'A new title', description:'A new description'}).save()
 
-````;
+````
 
 publishOnSave
 =============
@@ -120,7 +120,7 @@ You can also explicitly publish a model instance.
 mongoose.plugin(troop.publishOnSave, {redis:redis})
 instance.publish()
 
-````;
+````
 
 filter
 ======
@@ -130,7 +130,7 @@ Filter out properties which are not in your schema. The filter plugin will becom
 
 instance.filter().save()
 
-````;
+````
 
 rest
 ====
