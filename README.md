@@ -4,28 +4,28 @@ Example
 ```javascript
 
 var Troop = require('mongoose-troop')
-    , Mongoose = require('mongoose')
+  , Mongoose = require('mongoose')
+  , client = require('redis').createClient()
 
 var User = new mongoose.schema({ 
     name: String, 
     phone: String
 })
 
-User.plugin(Troop.authenticate)
-User.plugin(Troop.timestamp)
-User.plugin(Troop.addTags)
-User.plugin(Troop.publishOnSave)
+User.plugin(Troop.basicAuth)
+User.plugin(Troop.addCreatedAndModified)
+User.plugin(Troop.keywords)
+User.plugin(Troop.publishOnSave, { redis: client })
+User.plugin(Troop.slugify)
 User.plugin(Troop.rest)
 
-Mongoose.plugin(Troop.removeDefaults)
 Mongoose.plugin(Troop.upsert)
+Mongoose.plugin(Troop.removeDefaults)
 Mongoose.plugin(Troop.merge)
-Mongoose.plugin(Troop.filter)
 
 Mongoose.model('User', User)
 
 ````
-
 
 authenticate (alias basicAuth)
 ============
@@ -122,16 +122,11 @@ instance.publish()
 
 ````
 
-filter
-======
-Filter out properties which are not in your schema. The filter plugin will become obsolete in Mongoose v3.x
-
-```javascript
-
-instance.filter().save()
-
-````
-
 rest
 ====
 Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
+
+## License
+
+MIT
+
