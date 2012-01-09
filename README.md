@@ -33,35 +33,35 @@ Mongoose.model('User', User)
 
 
 basicAuth
----------
+=========
 
 Simple authentication plugin
 
-###Options
+##Options
 
 * `loginPath` schema path for username/login (optional, default `username`)
 * `hashPath` schema path to hashed password (optional, default `hash`)
 * `workFactor` bcrypt work factor (optional, default `10`)
 
-###Methods
+##Methods
 
-####instance.authenticate(password, callback)
+###instance.authenticate(password, callback)
 
 Authenticate a mongoose document
 
-####instance.setPassword(password, callback)
+###instance.setPassword(password, callback)
 
 Set the password for a mongoose document
 
-####model.authenticate(username, password, callback)
+###model.authenticate(username, password, callback)
 
 Authenticate a user on the model level
 
-####model.register(attributes, callback)
+###model.register(attributes, callback)
 
 Create a new user with given attributes
 
-###Example
+##Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -99,16 +99,16 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 
 
 addCreatedAndModified
----------------------
+=====================
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected
 
-###Options
+##Options
 
 * `createdPath` schema path for created timestamp (optional, default `created`)
 * `modifiedPath` schema path for modified timestamp (optional, default `modified`)
 
-###Example
+##Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -120,13 +120,13 @@ FooSchema.plugin(troop.addCreatedAndModified)
 
 
 slugify
--------
+=======
 
 Turn a string based field into a url friendly slug
 
 Converts `this is a title` to `this-is-a-title`
 
-###Options
+##Options
 
 * `target` schema path for slug destination (optional, default `slug`)
 * `source` schema path for slug content (optional, default `title`)
@@ -135,7 +135,7 @@ Converts `this is a title` to `this-is-a-title`
 * `invalidChar` invalid character replacement (optional, default ``)
 * `override` override slug field on source path change (optional, default `false`)
 
-###Example
+##Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -151,7 +151,7 @@ console.log(instance.slug) // `well-hello-there`
 
 
 keywords
---------
+========
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
@@ -164,13 +164,13 @@ Turns `foo is a bar` into `['foo', 'is', 'bar']`
 * `source` schema path for extracting keywords
 * `minLength` minimum string length to be used as a keyword (optional, default `2`)
 
-###Methods
+##Methods
 
-####instance.extractKeywords(str)
+###instance.extractKeywords(str)
 
 Manually calculate a keyword array with a given string
 
-###Example
+##Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -194,23 +194,26 @@ FooSchema.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
 
 
 removeDefaults
---------------
+==============
 
 Remove all of the default values from your model instance.
 
 `instance.removeDefaults().save()`
 
+##Options
+
+* `debug` verbose logging of current actions (optional, default `false`)
 
 upsert
-------
+======
 
 A more intuitive upsert method for modifying your document without first retrieving it.
 
 ```javascript
 var doc = { 
-    _id: '4e6121...',
-    name: 'Your Name',
-    email: 'email@gmail.com',
+  , _id: '4e6121...'
+  , name: 'Your Name'
+  , email: 'email@gmail.com'
 }
 
 // if doc contains an _id field just send it through
@@ -219,7 +222,7 @@ new User(doc).upsert()
 // if doc has an _id field, but you want to check the error yourself you 
 // can supply a callback as a single argument
 new User(doc).upsert(function (e) {
-    if (e) console.log(e)
+  if (e) console.log(e)
 })
 
 // if doc does not have an _id field, but you have access to 
@@ -228,32 +231,32 @@ new User(doc).upsert('4e6121...')
 
 // or you can supply the _id as a string for the first field and a callback
 new User(doc).upsert('4e6121...', function (e) {
-    if (e) console.log(e)
+  if (e) console.log(e)
 })
 
 // supply an object as the first argument, which contains the search
 // query or what to look for, and it will be updated with doc
 new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, function (e) {
-    if (e) console.log(e)
+  if (e) console.log(e)
 })
 
 // if doc contains an _id field, and you would like to make changes 
 // to dirty data but *not* update the entire doc, you can pass in the changes
 // as the first parameter with a callback
 new User(doc).upsert({$set : { name: 'name change' } }, function (e) {
-    if (e) console.log(e)
+  if (e) console.log(e)
 })
 
 // you can also pass in three arguments, what to look for, what to 
 // update, and the callback
 new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, {$set : { name: 'new name' } }, function (e) {
-    if (e) console.log(e)
+  if (e) console.log(e)
 })
 ````
 
 
 merge
------
+=====
 
 Merge JSON into your object more easily.
 
@@ -261,9 +264,13 @@ Merge JSON into your object more easily.
 instance.merge({title:'A new title', description:'A new description'}).save()
 ````
 
+##Options
+
+* `debug` verbose logging of current actions (optional, default `false`)
+
 
 publishOnSave
--------------
+=============
 
 Pass in a redis publisher connection to publish a model to redis everytime it is saved. Can intuitively publish only dirty/new data. Will eventually work with zeromq.
 
@@ -274,15 +281,24 @@ mongoose.plugin(troop.publishOnSave, {redis:redis})
 instance.publish()
 ````
 
+##Options
+
+* `redis` redis instance to be used for publishing
+* `debug` verbose logging of current actions (optional, default `false`)
+
 
 rest
-----
+====
+
+##Options
+
+* `debug` verbose logging of current actions (optional, default `false`)
 
 Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
 
 
 License
--------
+=======
 
 (The MIT License)
 
