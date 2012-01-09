@@ -211,9 +211,9 @@ A more intuitive upsert method for modifying your document without first retriev
 
 ```javascript
 var doc = { 
-  , _id: '4e6121...'
-  , name: 'Your Name'
-  , email: 'email@gmail.com'
+  _id: '4e6121...'
+, name: 'Your Name'
+, email: 'email@gmail.com'
 }
 
 // if doc contains an _id field just send it through
