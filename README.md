@@ -18,7 +18,7 @@ var User = new mongoose.schema({
 })
 
 User.plugin(Troop.basicAuth)
-User.plugin(Troop.addCreatedAndModified)
+User.plugin(Troop.timestamp)
 User.plugin(Troop.keywords)
 User.plugin(Troop.publishOnSave, { redis: client })
 User.plugin(Troop.slugify)
@@ -98,8 +98,8 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 ````
 
 
-addCreatedAndModified
-=====================
+timestamp
+=========
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected
 
@@ -115,7 +115,7 @@ var mongoose = require('mongoose')
   , troop = require('mongoose-troop')
   , FooSchema = new mongoose.Schema()
 
-FooSchema.plugin(troop.addCreatedAndModified)
+FooSchema.plugin(troop.timestamp)
 ````
 
 

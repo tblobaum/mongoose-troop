@@ -2,6 +2,7 @@ var vows = require('vows')
   , assert = require('assert')
   , mongoose = require('mongoose')
   , timestamp = require('../lib/timestamp')
+  , util = require('util')
 
 // DB setup  
 mongoose.connect('mongodb://localhost/mongoose_troop')
@@ -16,15 +17,14 @@ var BlogPost = new Schema({
   , body   : String
 })
 
-console.log('registering the plugin...')
 // Registering the timestamp plugin with mongoose
 // Note: Must be defined before creating schema object 
 mongoose.plugin(timestamp,{debug: true})
 
-var Blog = mongoose.model('BlogPost',BlogPost)
+var Blog = mongoose.model('BlogPost', BlogPost)
 
-vows.describe('Add createAt and modifiedAt').addBatch({
-  'when this plugin registered by default':{
+vows.describe('Add create and modified').addBatch({
+  'when this plugin registered by default': {
     topic: function(){
       var blog = new Blog()
       blog.author = "butu5"
@@ -32,8 +32,9 @@ vows.describe('Add createAt and modifiedAt').addBatch({
       blog.save(this.callback)
     },
 
-    'it should not be stored in collection': function(topic){
-      console.log(topic)
+    'it should create created and modified attribute': function(topic){
+      assert.equal(util.isDate(topic.created),true)
+      assert.equal(util.isDate(topic.modified),true)
     }
   }
 }).run()
