@@ -179,19 +179,24 @@ Manually calculate a keyword array with a given string
 ```javascript
 var mongoose = require('mongoose')
   , troop = require('mongoose-troop')
-  , FooSchema = new mongoose.Schema({
-      text: String
-    })
+  , db = mongoose.connect()
+
+var FooSchema = new mongoose.Schema({
+  text: String
+})
 
 FooSchema.plugin(troop.keywords, {
   source: 'text'
 })
 
-var instance = new FooSchema({text: 'i am the batman'})
+mongoose.model('foo', FooSchema)
+
+var fooModel = db.model('foo')
+  , instance = new FooSchema({text: 'i am the batman'})
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
 
-FooSchema.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
+fooModel.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
   // ...
 })
 ````
@@ -276,13 +281,56 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 publish
 =======
 
-Pass in a redis publisher connection to publish a model to redis everytime it is saved. Can intuitively publish only dirty/new data. Will eventually work with zeromq.
-
-You can also explicitly publish a model instance.
+Plugin to publish/subscribe from a model or instance level, also enabling a model 
+to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
+and instances can be published/subscribed to.
 
 ```javascript
-mongoose.plugin(troop.publishOnSave, {redis:redis})
-instance.publish()
+var redis = require('redis')
+  , publish = redis.createClient()
+  , subscribe = redis.createClient()
+  , mongoose = require('mongoose')
+  , troop = require('mongoose-troop')
+  , db = mongoose.connect()
+
+var FooSchema = new mongoose.Schema({
+  name: String
+})
+
+FooSchema.plugin(troop.publish, {
+  publish: redis
+, subscribe: subscribe
+})
+
+mongoose.model('foo', FooSchema)
+
+var fooModel = db.model('foo')
+
+fooModel.subscribe() // channel: 'foo'
+
+fooModel.findOne({name: 'bar'}, function(err, instance) {
+  // ...
+})
+````
+
+once you have a mongoose instance you can now publish it
+
+```javascript
+instance.publish({
+  method: 'save'
+})
+````
+
+or
+
+```javascript
+instance.save()
+````
+
+You can also subscribe on the instance level
+
+```javascript
+instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
 ````
 
 ##Options
@@ -291,7 +339,7 @@ instance.publish()
 * `hook` middleware method to attach auto middleware to (optional, default `post`)
 * `seperator` redis channel seperator (optional, default `:`)
 * `prefix` redis channel prefix (optional, default ``)
-* `channel` channel for schema to publish/subscribe to (optional, default `schema.constructor.modelName`)
+* `channel` channel for schema to publish/subscribe to, can be a string or function (optional, default `schema.constructor.modelName`)
 * `publish` redis instance to be used for publishing
 * `subscribe` redis instance to be used for subscribing
 
@@ -331,5 +379,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
