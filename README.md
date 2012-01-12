@@ -10,7 +10,8 @@ Example
 ```javascript
 var Troop = require('mongoose-troop')
   , Mongoose = require('mongoose')
-  , client = require('redis').createClient()
+  , publish = require('redis').createClient()
+  , subscribe = require('redis').createClient()
 
 var User = new mongoose.schema({ 
   name: String
@@ -20,7 +21,10 @@ var User = new mongoose.schema({
 User.plugin(Troop.basicAuth)
 User.plugin(Troop.timestamp)
 User.plugin(Troop.keywords)
-User.plugin(Troop.publishOnSave, { redis: client })
+User.plugin(Troop.publish, { 
+  publish: publish
+, subscribe: subscribe
+})
 User.plugin(Troop.slugify)
 User.plugin(Troop.rest)
 
@@ -269,8 +273,8 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 * `debug` verbose logging of current actions (optional, default `false`)
 
 
-publishOnSave
-=============
+publish
+=======
 
 Pass in a redis publisher connection to publish a model to redis everytime it is saved. Can intuitively publish only dirty/new data. Will eventually work with zeromq.
 
@@ -283,8 +287,13 @@ instance.publish()
 
 ##Options
 
-* `redis` redis instance to be used for publishing
-* `debug` verbose logging of current actions (optional, default `false`)
+* `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
+* `hook` middleware method to attach auto middleware to (optional, default `post`)
+* `seperator` redis channel seperator (optional, default `:`)
+* `prefix` redis channel prefix (optional, default ``)
+* `channel` channel for schema to publish/subscribe to (optional, default `schema.constructor.modelName`)
+* `publish` redis instance to be used for publishing
+* `subscribe` redis instance to be used for subscribing
 
 
 rest
