@@ -111,6 +111,7 @@ Adds a `created` and `modified` property to the schema, updating the timestamps 
 
 * `createdPath` schema path for created timestamp (optional, default `created`)
 * `modifiedPath` schema path for modified timestamp (optional, default `modified`)
+* `useVirtual` use a virtual path for created timestamp based on ObjectId (optional, default `true`)
 
 ##Example
 
