@@ -4,23 +4,31 @@ Mongoose Troop
 
 A collection of utility plugins for mongoose
 
+##Beta
+
+This project is a work in progress and subject to API changes, please feel free to contribute
+
 Example
 -------
 
 ```javascript
 var Troop = require('mongoose-troop')
   , Mongoose = require('mongoose')
-  , client = require('redis').createClient()
+  , publish = require('redis').createClient()
+  , subscribe = require('redis').createClient()
 
-var User = new mongoose.schema({ 
+var User = new mongoose.schema({
   name: String
 , phone: String
 })
 
 User.plugin(Troop.basicAuth)
-User.plugin(Troop.addCreatedAndModified)
+User.plugin(Troop.timestamp)
 User.plugin(Troop.keywords)
-User.plugin(Troop.publishOnSave, { redis: client })
+User.plugin(Troop.publish, {
+  publish: publish
+, subscribe: subscribe
+})
 User.plugin(Troop.slugify)
 User.plugin(Troop.rest)
 
@@ -98,15 +106,16 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 ````
 
 
-addCreatedAndModified
-=====================
+timestamp
+=========
 
-Adds a `created` and `modified` property to the schema, updating the timestamps as expected
+Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
 ##Options
 
 * `createdPath` schema path for created timestamp (optional, default `created`)
 * `modifiedPath` schema path for modified timestamp (optional, default `modified`)
+* `useVirtual` use a virtual path for created timestamp based on ObjectId (optional, default `true`)
 
 ##Example
 
@@ -115,8 +124,13 @@ var mongoose = require('mongoose')
   , troop = require('mongoose-troop')
   , FooSchema = new mongoose.Schema()
 
-FooSchema.plugin(troop.addCreatedAndModified)
+FooSchema.plugin(troop.timestamp)
 ````
+
+##Note
+
+Using the virtual `created` timestamp you will lose the ability to run queries against it, 
+as well as a loss in precision, as it will return a timestamp in seconds.
 
 
 slugify
@@ -175,19 +189,24 @@ Manually calculate a keyword array with a given string
 ```javascript
 var mongoose = require('mongoose')
   , troop = require('mongoose-troop')
-  , FooSchema = new mongoose.Schema({
-      text: String
-    })
+  , db = mongoose.connect()
+
+var FooSchema = new mongoose.Schema({
+  text: String
+})
 
 FooSchema.plugin(troop.keywords, {
   source: 'text'
 })
 
-var instance = new FooSchema({text: 'i am the batman'})
+mongoose.model('foo', FooSchema)
+
+var fooModel = db.model('foo')
+  , instance = new FooSchema({text: 'i am the batman'})
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
 
-FooSchema.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
+fooModel.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
   // ...
 })
 ````
@@ -269,22 +288,82 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 * `debug` verbose logging of current actions (optional, default `false`)
 
 
-publishOnSave
-=============
+publish
+=======
 
-Pass in a redis publisher connection to publish a model to redis everytime it is saved. Can intuitively publish only dirty/new data. Will eventually work with zeromq.
-
-You can also explicitly publish a model instance.
-
-```javascript
-mongoose.plugin(troop.publishOnSave, {redis:redis})
-instance.publish()
-````
+Plugin to publish/subscribe from a model or instance level, also enabling a model 
+to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
+and instances can be published/subscribed to.
 
 ##Options
 
-* `redis` redis instance to be used for publishing
-* `debug` verbose logging of current actions (optional, default `false`)
+* `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
+* `hook` middleware method to attach auto middleware to (optional, default `post`)
+* `seperator` redis channel seperator (optional, default `:`)
+* `prefix` redis channel prefix, can be a string or function (optional, default ``)
+* `channel` channel for schema to publish/subscribe to, can be a string or function (optional, default `schema.constructor.modelName`)
+* `publish` redis instance to be used for publishing
+* `subscribe` redis instance to be used for subscribing
+
+##Methods
+
+###instance.publish(options)
+
+###schema.subscribe()
+
+###schema.unsubscribe()
+
+###instance.subscribe()
+
+###instance.unsubscribe()
+
+```javascript
+var redis = require('redis')
+  , publish = redis.createClient()
+  , subscribe = redis.createClient()
+  , mongoose = require('mongoose')
+  , troop = require('mongoose-troop')
+  , db = mongoose.connect()
+
+var FooSchema = new mongoose.Schema({
+  name: String
+})
+
+FooSchema.plugin(troop.publish, {
+  publish: redis
+, subscribe: subscribe
+})
+
+mongoose.model('foo', FooSchema)
+
+var fooModel = db.model('foo')
+
+fooModel.subscribe() // channel: 'foo'
+
+fooModel.findOne({name: 'bar'}, function(err, instance) {
+  // ...
+})
+````
+
+once you have a mongoose instance you can now publish it
+
+```javascript
+instance.publish({
+  method: 'save'
+})
+````
+
+or
+
+```javascript
+instance.save()
+````
+
+You can also subscribe on the instance level
+
+```javascript
+instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
+````
 
 
 rest
@@ -322,5 +401,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
