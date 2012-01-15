@@ -30,6 +30,7 @@
     "bcrypt": "~0.5.0"
   },
   "devDependencies": {
-    "mocha": "~0.10.0"
+    "mocha": "~0.10.0",
+    "mongoose": "~2.4.10"
   }
 }
