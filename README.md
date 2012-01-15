@@ -4,6 +4,10 @@ Mongoose Troop
 
 A collection of utility plugins for mongoose
 
+##Beta
+
+This project is a work in progress and subject to API changes, please feel free to contribute
+
 Example
 -------
 
@@ -13,7 +17,7 @@ var Troop = require('mongoose-troop')
   , publish = require('redis').createClient()
   , subscribe = require('redis').createClient()
 
-var User = new mongoose.schema({ 
+var User = new mongoose.schema({
   name: String
 , phone: String
 })
@@ -21,7 +25,7 @@ var User = new mongoose.schema({
 User.plugin(Troop.basicAuth)
 User.plugin(Troop.timestamp)
 User.plugin(Troop.keywords)
-User.plugin(Troop.publish, { 
+User.plugin(Troop.publish, {
   publish: publish
 , subscribe: subscribe
 })
@@ -105,7 +109,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 timestamp
 =========
 
-Adds a `created` and `modified` property to the schema, updating the timestamps as expected
+Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
 ##Options
 
@@ -122,6 +126,11 @@ var mongoose = require('mongoose')
 
 FooSchema.plugin(troop.timestamp)
 ````
+
+##Note
+
+Using the virtual `created` timestamp you will lose the ability to run queries against it, 
+as well as a loss in precision, as it will return a timestamp in seconds.
 
 
 slugify
@@ -286,6 +295,28 @@ Plugin to publish/subscribe from a model or instance level, also enabling a mode
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
 and instances can be published/subscribed to.
 
+##Options
+
+* `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
+* `hook` middleware method to attach auto middleware to (optional, default `post`)
+* `seperator` redis channel seperator (optional, default `:`)
+* `prefix` redis channel prefix, can be a string or function (optional, default ``)
+* `channel` channel for schema to publish/subscribe to, can be a string or function (optional, default `schema.constructor.modelName`)
+* `publish` redis instance to be used for publishing
+* `subscribe` redis instance to be used for subscribing
+
+##Methods
+
+###instance.publish(options)
+
+###schema.subscribe()
+
+###schema.unsubscribe()
+
+###instance.subscribe()
+
+###instance.unsubscribe()
+
 ```javascript
 var redis = require('redis')
   , publish = redis.createClient()
@@ -333,16 +364,6 @@ You can also subscribe on the instance level
 ```javascript
 instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
 ````
-
-##Options
-
-* `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
-* `hook` middleware method to attach auto middleware to (optional, default `post`)
-* `seperator` redis channel seperator (optional, default `:`)
-* `prefix` redis channel prefix (optional, default ``)
-* `channel` channel for schema to publish/subscribe to, can be a string or function (optional, default `schema.constructor.modelName`)
-* `publish` redis instance to be used for publishing
-* `subscribe` redis instance to be used for subscribing
 
 
 rest

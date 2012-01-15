@@ -1,55 +1,76 @@
 
 // Dependencies
-var vows = require('vows')
+var util = require('util')
   , assert = require('assert')
   , mongoose = require('mongoose')
   , timestamp = require('../lib/timestamp')
-  , util = require('util')
+  , common = require('./common')
+  , db = common.db
+  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
-  , db = mongoose.connect('mongodb://localhost/mongoose_troop')
 
 // Run tests
-vows
-  .describe('Timestamp plugin')
-  .addBatch({
-    'registered by default': {
-      topic: function() {
-        var FooSchema = new Schema()
-        FooSchema.plugin(timestamp)
-        var Foo = mongoose.model('foo', FooSchema)
-          , bar = new Foo()
-        
-        bar.save(this.callback)
-      }
-    , 'it should create the default attributes': function(err, doc) {
-        assert.isNull(err)
-        assert.equal(util.isDate(doc.created), true)
-        assert.equal(util.isDate(doc.modified), true)
-        doc.remove()
-      }
-    }
-  , 'registered with options': {
-      topic: function() {
-        var FooSchema = new Schema()
-        FooSchema.plugin(timestamp, {
-          createdPath: 'oh'
-        , modifiedPath: 'hai'
-        , useVirtual: false
-        })
-        var Foo = mongoose.model('foo2', FooSchema)
-          , bar = new Foo()
-        
-        bar.save(this.callback)
-      }
-    , 'it should create custom attributes': function(err, doc) {
-        assert.isNull(err)
-        assert.equal(util.isDate(doc.oh), true)
-        assert.equal(util.isDate(doc.hai), true)
-        doc.remove(function() {
-          db.disconnect()
-        })
-      }
-    }
+describe('Timestamp', function() {
+  describe('#default()', function() {
+    var FooSchema = new Schema()
+    FooSchema.plugin(timestamp)
+    var FooModel = mongoose.model('timeFoo', FooSchema)
+      , bar = new FooModel()
+    
+    before(function() {
+      FooModel.remove(function(err) {
+        assert.strictEqual(err, null)
+      })
+    })
+
+    it('should have custom properties', function(done) {
+      assert.strictEqual(typeof FooSchema.virtuals.created, 'object')
+      assert.strictEqual(typeof FooSchema.paths.modified, 'object')
+      done()
+    })
+
+    it('should create the default attributes', function(done) {
+      bar.save(function(err, doc) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(util.isDate(doc.created), true)
+        assert.strictEqual(util.isDate(doc.modified), true)
+        done()
+      })
+    })
   })
-  .run()
+
+  describe('#custom()', function() {
+    var FooSchema = new Schema()
+    FooSchema.plugin(timestamp, {
+      createdPath: 'oh'
+    , modifiedPath: 'hai'
+    , useVirtual: false
+    })
+    var BarModel = mongoose.model('timeBar', FooSchema)
+      , bar = new BarModel()
+
+    before(function() {
+      BarModel.remove(function(err) {
+        assert.strictEqual(err, null)
+      })
+    })
+
+    it('should have custom properties', function(done) {
+      assert.strictEqual(typeof FooSchema.paths.oh, 'object')
+      assert.strictEqual(typeof FooSchema.paths.hai, 'object')
+      done()
+    })
+
+    it('should create custom attributes', function(done) {
+      bar.save(function(err, doc) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(util.isDate(doc.oh), true)
+        assert.strictEqual(util.isDate(doc.hai), true)
+        done()
+      })
+    })
+  })
+
+  // cleanup()
+})
