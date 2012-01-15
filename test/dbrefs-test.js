@@ -27,18 +27,38 @@ describe('dbrefs utility functions', function() {
     var OtherModel = mongoose.model('other', OtherSchema)
     var ArrModel = mongoose.model('arr', ArrSchema)
     
-    var foo = new FooModel({arr: [new ArrModel()], other: new OtherModel() })
-    
+    var othermodel = new OtherModel()
+    var arrmodel = new ArrModel()
+    var foo = new FooModel({arr: [arrmodel], other: othermodel })
+
     foo.arr.push(new ArrModel())
     
     it('should return an object with the dbrefs ', function(done) {
       foo.getdbrefs(function (refs) {
-        console.log(refs)
         assert.notStrictEqual(Object.keys(refs), Array)
         done()
       })
     })
-    
+      
+    it('should still work with populate ', function(done) {
+      arrmodel.save(function (e) {
+        othermodel.save(function (e) {
+          foo.save(function (e) {
+            FooModel
+              .find()
+              .populate('arr')
+              .populate('other')
+              .run(function (e, docs) {
+                docs[docs.length-1].getdbrefs(function (refs) {
+                  assert.notStrictEqual(Object.keys(refs), ["other", "arr"])
+                  done()
+                })
+              })
+          })
+        })
+      })
+    })
+        
   })
 
 })
