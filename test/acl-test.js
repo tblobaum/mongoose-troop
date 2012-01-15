@@ -1,12 +1,10 @@
 
 // Dependencies
-var util = require('util')
-  , assert = require('assert')
+var assert = require('assert')
   , mongoose = require('mongoose')
   , acl = require('../lib/acl')
   , common = require('./common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
