@@ -1,28 +1,33 @@
 {
-  "author": "Thomas Blobaum <tblobaum@gmail.com> (https://github.com/tblobaum/)"
-, "contributors": [
-    { "name": "Profulla Sadangi", "url": "https://github.com/butu5/" }
-  , { "name": "Beau Sorensen", "url": "https://github.com/sorensen/" }
-  ]
-, "name": "mongoose-troop"
-, "description": "plugins for mongoose"
-, "version": "0.0.3"
-, "homepage": "http://analyticsmachine.com"
-, "repository": {
-    "type": "git"
-  , "url": "git://github.com/tblobaum/mongoose-troop.git"
-  }
-, "scripts": {
-    "test": "npm test"
-  }
-, "engines": {
+  "author": "Thomas Blobaum <tblobaum@gmail.com> (https://github.com/tblobaum/)",
+  "contributors": [
+    {
+      "name": "Profulla Sadangi",
+      "url": "https://github.com/butu5/"
+    },
+    {
+      "name": "Beau Sorensen",
+      "url": "https://github.com/sorensen/"
+    }
+  ],
+  "name": "mongoose-troop",
+  "description": "plugins for mongoose",
+  "version": "0.0.3",
+  "homepage": "http://analyticsmachine.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tblobaum/mongoose-troop.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "engines": {
     "node": "*"
-  }
-, "dependencies": {
-    "underscore": "~1.2.3"
-  , "directory": "0.0.x"
-  }
-, "devDependencies": {
-    "vows": "0.6.0"
-  }
+  },
+  "dependencies": {
+    "underscore": "~1.2.3",
+    "directory": "0.0.x",
+    "bcrypt": "~0.5.0"
+  },
+  "devDependencies": { }
 }
