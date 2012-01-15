@@ -16,8 +16,8 @@ describe('acl', function() {
     var FooModel = mongoose.model('foo', FooSchema)
     var foo = new FooModel()
 
-    foo.add_access('blog')
-    foo.add_access('dashboard')
+    foo.addAccess('blog')
+    foo.addAccess('dashboard')
 
     it('should have access to blog', function(done) {
       foo.access('blog', function (bool) {
@@ -34,7 +34,7 @@ describe('acl', function() {
     })
       
     it('should no longer have access to dashboard', function(done) {
-      foo.remove_access('dashboard')
+      foo.removeAccess('dashboard')
       foo.access('dashboard', function (bool) {
         assert.strictEqual(bool, false)
         done()
