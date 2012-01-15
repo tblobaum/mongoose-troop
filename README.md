@@ -1,6 +1,5 @@
 
-Mongoose Troop
-==============
+# Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop) 
 
 A collection of utility plugins for mongoose
 
