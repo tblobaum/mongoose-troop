@@ -3,9 +3,6 @@
 
 A collection of handy plugins for mongoose
 
-##Alpha
-This project is a work in progress and subject to API changes, please feel free to contribute
-
 ##Contents
 * acl
 * basicAuth
@@ -383,6 +380,11 @@ rest
 * `debug` verbose logging of current actions (optional, default `false`)
 
 Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
+
+Contributing
+============
+
+This project is a work in progress and subject to API changes, please feel free to contribute
 
 
 License
