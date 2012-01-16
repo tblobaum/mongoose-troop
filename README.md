@@ -192,7 +192,7 @@ console.log(instance.keywords) // `['am', 'the', 'batman']`
 
 var val = 'batman'
 
-fooModel.find({ keywords: { $in: instance.extractKeywords(val) }}, function(docs) {
+fooModel.find({ keywords: { $in: fooModel.extractKeywords(val) }}, function(docs) {
   // ...
 })
 ````
