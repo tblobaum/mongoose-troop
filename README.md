@@ -190,7 +190,9 @@ var fooModel = db.model('foo')
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
 
-fooModel.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
+var val = 'batman'
+
+fooModel.find({ keywords: { $in: instance.extractKeywords(val) }}, function(docs) {
   // ...
 })
 ````
