@@ -27,7 +27,8 @@
   "dependencies": {
     "underscore": "~1.2.3",
     "directory": "0.0.x",
-    "bcrypt": "~0.5.0"
+    "bcrypt": "~0.5.0",
+    "natural": "0.0.63"
   },
   "devDependencies": {
     "mocha": "~0.10.0",

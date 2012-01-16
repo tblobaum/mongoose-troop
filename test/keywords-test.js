@@ -36,14 +36,14 @@ describe('Keywords', function() {
     it('should extract keywords on save', function(done) {
       foo.save(function(err, doc) {
         assert.strictEqual(err, null)
-        assert.strictEqual(doc.keywords.toString(), ['like', 'cookies'].toString())
+        assert.strictEqual(doc.keywords.toString(), ['like', 'cooki'].toString())
         done()
       })
     })
 
     it('should manually extract keywords', function(done) {
       var words = foo.extractKeywords('one two three')
-      assert.strictEqual(words.toString(), ['one', 'two', 'three'].toString())
+      assert.strictEqual(words.toString(), ['on', 'two', 'three'].toString())
       done()
     })
   })
@@ -81,7 +81,7 @@ describe('Keywords', function() {
       bar.save(function(err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.milk.toString(), [
-          'lorem', 'ipsumi', 'foo', 'test', 'one', 'two'
+          'lorem','ipsumi','foo','test','on','two'
         ].toString())
         done()
       })
@@ -92,6 +92,9 @@ describe('Keywords', function() {
       assert.strictEqual(words.toString(), ['two', 'three'].toString())
       done()
     })
+    
+    
+    
   })
 
   // cleanup()
