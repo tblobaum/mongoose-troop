@@ -198,7 +198,7 @@ fooModel.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
 
 ## utils <a name="Troop.utils" href="#Troop.utils"><small><sup>link</sup></small></a>
 
-#### merge
+### merge
 
 Merge JSON into your object more easily.
 
