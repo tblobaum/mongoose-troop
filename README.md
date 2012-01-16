@@ -7,7 +7,7 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.acl"> acess control list </a>
 * <a href="#Troop.basicAuth"> authentication </a>
 * <a href="#Troop.timestamp"> timestamps </a>
-* <a href="#Troop.slugify"> slugify </a> (url-friendly copies of a string properties)
+* <a href="#Troop.slugify"> slugify </a> (url-friendly copies of string properties)
 * <a href="#Troop.keywords"> keywords </a> (search-friendly array of stemmed words from string properties)
 * <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
 * <a href="#Troop.pubsub"> pubsub </a> (message passing)
