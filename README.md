@@ -20,11 +20,11 @@ Simple access control list
 
 ### instance.addAccess(key)
 
-Add key access to a model instance
+Add `key` access to a Model instance
 
 ### instance.removeAccess(key)
 
-Remove key access to a model instance
+Remove `key` access to a Model instance
 
 ### instance.access(key [, callback])
 
