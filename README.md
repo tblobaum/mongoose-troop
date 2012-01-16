@@ -3,7 +3,7 @@
 
 A collection of handy plugins for mongoose
 
-##Contents
+### Contents
 * <a href="#Troop.acl"> acl </a>
 * <a href="#Troop.basicAuth"> basicAuth </a>
 * <a href="#Troop.timestamp"> timestamp </a>
@@ -14,67 +14,52 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.pubsub"> pubsub </a>
 * <a href="#Troop.rest"> rest </a>
 
-###Example
+## acl <a name="Troop.acl" href="#Troop.acl"><small><sup>link</sup></small></a>
+Simple access control list
 
-```javascript
-var Troop = require('mongoose-troop')
-  , Mongoose = require('mongoose')
-  , publish = require('redis').createClient()
-  , subscribe = require('redis').createClient()
+#### Methods
 
-var User = new mongoose.schema({
-  name: String
-, phone: String
-})
+### instance.addAccess(key)
 
-User.plugin(Troop.basicAuth)
-User.plugin(Troop.timestamp)
-User.plugin(Troop.keywords)
-User.plugin(Troop.publish, {
-  publish: publish
-, subscribe: subscribe
-})
-User.plugin(Troop.slugify)
-User.plugin(Troop.rest)
+Add key access to a model instance
 
-Mongoose.plugin(Troop.upsert)
-Mongoose.plugin(Troop.removeDefaults)
-Mongoose.plugin(Troop.merge)
+### instance.removeAccess(key)
 
-Mongoose.model('User', User)
-````
+Remove key access to a model instance
 
+### instance.access(key [, callback])
 
-basicAuth <a name="Troop.basicAuth" href="#Troop.basicAuth"><small><sup>link</sup></small></a>
-=========
+Return or callback a boolean
+
+## basicAuth <a name="Troop.basicAuth" href="#Troop.basicAuth"><small><sup>link</sup></small></a>
 
 Simple authentication plugin
 
-###Options
+#### Options
 
 * `loginPath` schema path for username/login (optional, default `username`)
 * `hashPath` schema path to hashed password (optional, default `hash`)
 * `workFactor` bcrypt work factor (optional, default `10`)
 
-###Methods
+#### Methods
 
-####instance.authenticate(password, callback)
+### instance.authenticate(password, callback)
 
 Authenticate a mongoose document
 
-####instance.setPassword(password, callback)
+### instance.setPassword(password, callback)
 
 Set the password for a mongoose document
 
-####model.authenticate(username, password, callback)
+### model.authenticate(username, password, callback)
 
 Authenticate a user on the model level
 
-####model.register(attributes, callback)
+### model.register(attributes, callback)
 
 Create a new user with given attributes
 
-###Example
+#### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -109,20 +94,17 @@ User.findOne({ username: 'foo'}, function(err, doc) {
   })
 })
 ````
-
-
-timestamp <a name="Troop.timestamp" href="#Troop.timestamp"><small><sup>link</sup></small></a>
-=========
+## timestamp <a name="Troop.timestamp" href="#Troop.timestamp"><small><sup>link</sup></small></a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
-###Options
+#### Options
 
 * `createdPath` schema path for created timestamp (optional, default `created`)
 * `modifiedPath` schema path for modified timestamp (optional, default `modified`)
 * `useVirtual` use a virtual path for created timestamp based on ObjectId (optional, default `true`)
 
-###Example
+#### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -132,20 +114,19 @@ var mongoose = require('mongoose')
 FooSchema.plugin(troop.timestamp)
 ````
 
-###Note
+#### Note
 
 Using the virtual `created` timestamp you will lose the ability to run queries against it, 
 as well as a loss in precision, as it will return a timestamp in seconds.
 
 
-slugify <a name="Troop.slugify" href="#Troop.slugify"><small><sup>link</sup></small></a>
-=======
+## slugify <a name="Troop.slugify" href="#Troop.slugify"><small><sup>link</sup></small></a>
 
 Turn a string based field into a url friendly slug
 
 Converts `this is a title` to `this-is-a-title`
 
-###Options
+#### Options
 
 * `target` schema path for slug destination (optional, default `slug`)
 * `source` schema path for slug content (optional, default `title`)
@@ -154,7 +135,7 @@ Converts `this is a title` to `this-is-a-title`
 * `invalidChar` invalid character replacement (optional, default ``)
 * `override` override slug field on source path change (optional, default `false`)
 
-###Example
+#### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -169,27 +150,26 @@ console.log(instance.slug) // `well-hello-there`
 ````
 
 
-keywords <a name="Troop.keywords" href="#Troop.keywords"><small><sup>link</sup></small></a>
-========
+## keywords <a name="Troop.keywords" href="#Troop.keywords"><small><sup>link</sup></small></a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
 
 Turns `foo is a bar` into `['foo', 'is', 'bar']`
 
-####Options
+#### Options
 
 * `target` schema path for keyword destination (optional, default `keywords`)
 * `source` schema path for extracting keywords
 * `minLength` minimum string length to be used as a keyword (optional, default `2`)
 
-###Methods
+#### Methods
 
-####instance.extractKeywords(str)
+### instance.extractKeywords(str)
 
 Manually calculate a keyword array with a given string
 
-###Example
+#### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -216,10 +196,9 @@ fooModel.find({ keywords: { $in: [ 'batman' ] }}, function(docs) {
 })
 ````
 
-utils <a name="Troop.utils" href="#Troop.utils"><small><sup>link</sup></small></a>
-=====
+## utils <a name="Troop.utils" href="#Troop.utils"><small><sup>link</sup></small></a>
 
-### merge
+#### merge
 
 Merge JSON into your object more easily.
 
@@ -231,6 +210,18 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 
 * `debug` verbose logging of current actions (optional, default `false`)
 
+### getdbrefs
+
+Get the dbrefs from a schema
+
+```javascript
+instance.getdbrefs(function (refs) {
+  console.log(refs)
+  // ..
+  
+})
+
+```
 
 ### removeDefaults
 
@@ -242,8 +233,7 @@ Remove all of the default values from your model instance.
 
 * `debug` verbose logging of current actions (optional, default `false`)
 
-upsert <a name="Troop.upsert" href="#Troop.upsert"><small><sup>link</sup></small></a>
-======
+## upsert <a name="Troop.upsert" href="#Troop.upsert"><small><sup>link</sup></small></a>
 
 A more intuitive upsert method for modifying your document without first retrieving it.
 
@@ -292,14 +282,13 @@ new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, {$set : { na
 })
 ````
 
-publish <a name="Troop.publish" href="#Troop.publish"><small><sup>link</sup></small></a>
-=======
+## publish <a name="Troop.publish" href="#Troop.publish"><small><sup>link</sup></small></a>
 
 Plugin to publish/subscribe from a model or instance level, also enabling a model 
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
 and instances can be published/subscribed to.
 
-###Options
+#### Options
 
 * `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
 * `hook` middleware method to attach auto middleware to (optional, default `post`)
@@ -309,17 +298,17 @@ and instances can be published/subscribed to.
 * `publish` redis instance to be used for publishing
 * `subscribe` redis instance to be used for subscribing
 
-###Methods
+#### Methods
 
-####instance.publish(options)
+### instance.publish(options)
 
-####schema.subscribe()
+### schema.subscribe()
 
-####schema.unsubscribe()
+### schema.unsubscribe()
 
-####instance.subscribe()
+### instance.subscribe()
 
-####instance.unsubscribe()
+### instance.unsubscribe()
 
 ```javascript
 var redis = require('redis')
@@ -369,24 +358,20 @@ You can also subscribe on the instance level
 instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
 ````
 
+## rest <a name="Troop.rest" href="#Troop.rest"><small><sup>link</sup></small></a>
 
-rest <a name="Troop.rest" href="#Troop.rest"><small><sup>link</sup></small></a>
-====
-
-###Options
+#### Options
 
 * `debug` verbose logging of current actions (optional, default `false`)
 
 Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
 
-Contributing
-============
+## Contributing
 
 This project is a work in progress and subject to API changes, please feel free to contribute
 
 
-License
-=======
+## License
 
 (The MIT License)
 
