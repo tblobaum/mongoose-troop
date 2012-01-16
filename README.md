@@ -1,11 +1,21 @@
 
 # Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop) 
 
-A collection of utility plugins for mongoose
+A collection of handy plugins for mongoose
 
-##Beta
-
+##Alpha
 This project is a work in progress and subject to API changes, please feel free to contribute
+
+##Contents
+* acl
+* basicAuth
+* timestamp
+* slugify
+* keywords
+* upsert
+* utils (merge, removeDefaults, getdbrefs)
+* pubsub
+* rest
 
 Example
 -------
