@@ -4,15 +4,14 @@
 A collection of handy plugins for mongoose
 
 ### Contents
-* <a href="#Troop.acl"> acl </a>
-* <a href="#Troop.basicAuth"> basicAuth </a>
-* <a href="#Troop.timestamp"> timestamp </a>
-* <a href="#Troop.slugify"> slugify </a>
-* <a href="#Troop.keywords"> keywords </a>
-* <a href="#Troop.upsert"> upsert </a>
+* <a href="#Troop.acl"> acess control list </a>
+* <a href="#Troop.basicAuth"> authentication </a>
+* <a href="#Troop.timestamp"> timestamps </a>
+* <a href="#Troop.slugify"> slugify </a> (url-friendly copies of a string properties)
+* <a href="#Troop.keywords"> keywords </a> (search-friendly array of stemmed words from string properties)
 * <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
-* <a href="#Troop.pubsub"> pubsub </a>
-* <a href="#Troop.rest"> rest </a>
+* <a href="#Troop.pubsub"> pubsub </a> (message passing)
+* <a href="#Troop.rest"> rest </a> (http or rpc controller)
 
 ## acl <a name="Troop.acl" href="#Troop.acl"><small><sup>link</sup></small></a>
 Simple access control list
@@ -232,55 +231,6 @@ Remove all of the default values from your model instance.
 #### Options
 
 * `debug` verbose logging of current actions (optional, default `false`)
-
-## upsert <a name="Troop.upsert" href="#Troop.upsert"><small><sup>link</sup></small></a>
-
-A more intuitive upsert method for modifying your document without first retrieving it.
-
-```javascript
-var doc = { 
-  _id: '4e6121...'
-, name: 'Your Name'
-, email: 'email@gmail.com'
-}
-
-// if doc contains an _id field just send it through
-new User(doc).upsert()
-
-// if doc has an _id field, but you want to check the error yourself you 
-// can supply a callback as a single argument
-new User(doc).upsert(function (e) {
-  if (e) console.log(e)
-})
-
-// if doc does not have an _id field, but you have access to 
-// it as a string, you can use this
-new User(doc).upsert('4e6121...')
-
-// or you can supply the _id as a string for the first field and a callback
-new User(doc).upsert('4e6121...', function (e) {
-  if (e) console.log(e)
-})
-
-// supply an object as the first argument, which contains the search
-// query or what to look for, and it will be updated with doc
-new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, function (e) {
-  if (e) console.log(e)
-})
-
-// if doc contains an _id field, and you would like to make changes 
-// to dirty data but *not* update the entire doc, you can pass in the changes
-// as the first parameter with a callback
-new User(doc).upsert({$set : { name: 'name change' } }, function (e) {
-  if (e) console.log(e)
-})
-
-// you can also pass in three arguments, what to look for, what to 
-// update, and the callback
-new User(doc).upsert({apikey: '81da51e88199139e0e9cc56464607411' }, {$set : { name: 'new name' } }, function (e) {
-  if (e) console.log(e)
-})
-````
 
 ## publish <a name="Troop.publish" href="#Troop.publish"><small><sup>link</sup></small></a>
 
