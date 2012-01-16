@@ -59,7 +59,7 @@ describe('Keywords', function() {
     })
     var BarModel = mongoose.model('keywordBar', FooSchema)
       , bar = new BarModel({ 
-          moo: 'lorem ipsum! to a foo'
+          moo: 'fooed bars'
         , cow: 'test õne twø lorem'
         })
     
@@ -81,7 +81,7 @@ describe('Keywords', function() {
       bar.save(function(err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.milk.toString(), [
-          'lorem','ipsumi','foo','test','on','two'
+          'foo','bar','test','on','two','lorem'
         ].toString())
         done()
       })

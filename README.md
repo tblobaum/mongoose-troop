@@ -154,7 +154,7 @@ console.log(instance.slug) // `well-hello-there`
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
 
-Turns `foo is a bar` into `['foo', 'is', 'bar']`
+Turns `fooed bars` into `['foo', 'bar']`
 
 #### Options
 
