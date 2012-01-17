@@ -128,7 +128,9 @@ Using the virtual `created` timestamp you will lose the ability to run queries a
 as well as a loss in precision, as it will return a timestamp in seconds.
 
 
-# slugify <a name="Troop.slugify" href="#Troop.slugify"><small><sup>link</sup></small></a>
+***
+
+# <a name="Troop.slugify" href="#Troop.slugify">slugify</a>
 
 Turn a string based field into a url friendly slug
 
