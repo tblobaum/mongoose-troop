@@ -11,8 +11,8 @@ var util = require('util')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('BasicAuth', function() {
-  describe('#default()', function() {
+describe('BasicAuth', function () {
+  describe('#default()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(basicAuth)
     var FooModel = mongoose.model('authFoo', FooSchema)
@@ -21,13 +21,13 @@ describe('BasicAuth', function() {
     , password: 'beau'
     })
 
-    before(function() {
-      FooModel.remove(function(err) {
+    before(function () {
+      FooModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
     
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.username, 'object')
       assert.strictEqual(typeof FooSchema.paths.hash, 'object')
       assert.strictEqual(typeof FooSchema.virtuals.password, 'object')
@@ -38,50 +38,50 @@ describe('BasicAuth', function() {
       done()
     })
 
-    it('should create hash on save', function(done) {
-      foo.save(function(err, doc) {
+    it('should create hash on save', function (done) {
+      foo.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.hash, 'string')
         done()
       })
     })
 
-    it('should authenticate', function(done) {
-      foo.authenticate('beau', function(err, result) {
+    it('should authenticate', function (done) {
+      foo.authenticate('beau', function (err, result) {
         assert.strictEqual(err, undefined)
         assert.ok(result)
         done()
       })
     })
 
-    it('should set new password', function(done) {
-      foo.setPassword('mouse', function(err) {
+    it('should set new password', function (done) {
+      foo.setPassword('mouse', function (err) {
         assert.strictEqual(err, null)
         done()
       })
     })
 
-    it('should re-authenticate', function(done) {
-      foo.authenticate('mouse', function(err, result) {
+    it('should re-authenticate', function (done) {
+      foo.authenticate('mouse', function (err, result) {
         assert.strictEqual(err, undefined)
         assert.ok(result)
         done()
       })
     })
 
-    it('should not authenticate', function(done) {
-      foo.authenticate('computer', function(err, result) {
+    it('should not authenticate', function (done) {
+      foo.authenticate('computer', function (err, result) {
         assert.strictEqual(err, undefined)
         assert.strictEqual(result, false)
         done()
       })
     })
 
-    it('should register a new user from model', function(done) {
+    it('should register a new user from model', function (done) {
       FooModel.register({
         username: 'roger'
       , password: 'rabbit'
-      }, function(err, doc) {
+      }, function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.username, 'roger')
         assert.strictEqual(typeof doc.hash, 'string')
@@ -89,8 +89,8 @@ describe('BasicAuth', function() {
       })
     })
 
-    it('should authenticate from model', function(done) {
-      FooModel.authenticate('roger', 'rabbit', function(err, result) {
+    it('should authenticate from model', function (done) {
+      FooModel.authenticate('roger', 'rabbit', function (err, result) {
         assert.strictEqual(err, null)
         assert.ok(result)
         done()
@@ -98,7 +98,7 @@ describe('BasicAuth', function() {
     })
   })
 
-  describe('#custom()', function() {
+  describe('#custom()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(basicAuth, {
       loginPath: 'login'
@@ -111,13 +111,13 @@ describe('BasicAuth', function() {
     , password: 'bar'
     })
     
-    before(function() {
-      BarModel.remove(function(err) {
+    before(function () {
+      BarModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
 
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.login, 'object')
       assert.strictEqual(typeof FooSchema.paths.key, 'object')
       assert.strictEqual(typeof FooSchema.virtuals.password, 'object')
@@ -128,24 +128,24 @@ describe('BasicAuth', function() {
       done()
     })
 
-    it('should create hash on save', function(done) {
-      bar.save(function(err, doc) {
+    it('should create hash on save', function (done) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.key, 'string')
         done()
       })
     })
 
-    it('should authenticate', function(done) {
-      bar.authenticate('bar', function(err, result) {
+    it('should authenticate', function (done) {
+      bar.authenticate('bar', function (err, result) {
         assert.strictEqual(err, undefined)
         assert.ok(result)
         done()
       })
     })
 
-    it('should not authenticate', function(done) {
-      bar.authenticate('computer', function(err, result) {
+    it('should not authenticate', function (done) {
+      bar.authenticate('computer', function (err, result) {
         assert.strictEqual(err, undefined)
         assert.strictEqual(result, false)
         done()

@@ -11,29 +11,29 @@ var util = require('util')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Slugify', function() {
+describe('Slugify', function () {
   var FooSchema = new Schema()
   
-  describe('#default()', function() {
+  describe('#default()', function () {
     FooSchema.plugin(slugify)
     var FooModel = mongoose.model('slugFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
-    before(function() {
-      FooModel.remove(function(err) {
+    before(function () {
+      FooModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
     
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.title, 'object')
       assert.strictEqual(typeof FooSchema.paths.slug, 'object')
       assert.strictEqual(typeof FooSchema.methods.slugify, 'function')
       done()
     })
 
-    it('should slugify on save', function(done) {
-      foo.save(function(err, doc) {
+    it('should slugify on save', function (done) {
+      foo.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.slug, 'string')
         assert.strictEqual(doc.slug, 'i-like-cookies')
@@ -41,9 +41,9 @@ describe('Slugify', function() {
       })
     })
 
-    it('should have the same value', function(done) {
+    it('should have the same value', function (done) {
       foo.title = 'oh hai thar'
-      foo.save(function(err, doc) {
+      foo.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.slug, 'string')
         assert.strictEqual(doc.slug, 'i-like-cookies')
@@ -51,14 +51,14 @@ describe('Slugify', function() {
       })
     })
 
-    it('should manually slugify', function(done) {
+    it('should manually slugify', function (done) {
       var slug = foo.slugify('one two three')
       assert.strictEqual(slug, 'one-two-three')
       done()
     })
   })
 
-  describe('#custom()', function() {
+  describe('#custom()', function () {
     FooSchema.plugin(slugify, {
       source: 'hey'
     , target: 'there'
@@ -72,21 +72,21 @@ describe('Slugify', function() {
           hey: 'lorem ipsum! twø a foo'
         })
     
-    before(function() {
-      BarModel.remove(function(err) {
+    before(function () {
+      BarModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
     
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.hey, 'object')
       assert.strictEqual(typeof FooSchema.paths.there, 'object')
       assert.strictEqual(typeof FooSchema.methods.slugify, 'function')
       done()
     })
 
-    it('should slugify on save', function(done) {
-      bar.save(function(err, doc) {
+    it('should slugify on save', function (done) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.there, 'string')
         assert.strictEqual(doc.there, 'lorem_ipsumi_two_a_f')
@@ -94,9 +94,9 @@ describe('Slugify', function() {
       })
     })
 
-    it('should create a new slug', function(done) {
+    it('should create a new slug', function (done) {
       bar.hey = 'well hëy there guy!!!'
-      bar.save(function(err, doc) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(typeof doc.there, 'string')
         assert.strictEqual(doc.there, 'well_hey_there_guyi')
@@ -104,7 +104,7 @@ describe('Slugify', function() {
       })
     })
 
-    it('should manually slugify', function(done) {
+    it('should manually slugify', function (done) {
       var slug = bar.slugify('one two three')
       assert.strictEqual(slug, 'one_two_three')
       done()

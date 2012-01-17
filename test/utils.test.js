@@ -11,8 +11,8 @@ var util = require('util')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Utils', function() {
-  describe('#default()', function() {
+describe('Utils', function () {
+  describe('#default()', function () {
     var BarSchema = new Schema({
       other: {
         type:mongoose.Schema.ObjectId
@@ -35,21 +35,21 @@ describe('Utils', function() {
       , arrmodel = new ArrModel()
       , bar = new BarModel({arr: [arrmodel], other: othermodel })
 
-    it('should have custom methods', function(done) {
+    it('should have custom methods', function (done) {
       assert.ok(bar.merge)
       assert.ok(bar.removeDefaults)
       assert.ok(bar.getdbrefs)
       done()
     })
     
-    it('should return an object with the dbrefs', function(done) {
+    it('should return an object with the dbrefs', function (done) {
       bar.getdbrefs(function (refs) {
         assert.notStrictEqual(Object.keys(refs), Array)
         done()
       })
     })
       
-    it('should still work with populate', function(done) {
+    it('should still work with populate', function (done) {
       arrmodel.save(function (err) {
         assert.strictEqual(err, null)
         othermodel.save(function (err) {

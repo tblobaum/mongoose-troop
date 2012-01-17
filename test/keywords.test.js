@@ -11,8 +11,8 @@ var util = require('util')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Keywords', function() {
-  describe('#default()', function() {
+describe('Keywords', function () {
+  describe('#default()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(keywords, {
       source: 'title'
@@ -20,35 +20,35 @@ describe('Keywords', function() {
     var FooModel = mongoose.model('keywordFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
-    before(function() {
-      FooModel.remove(function(err) {
+    before(function () {
+      FooModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
 
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.title, 'object')
       assert.strictEqual(typeof FooSchema.paths.keywords, 'object')
       assert.strictEqual(typeof FooSchema.methods.extractKeywords, 'function')
       done()
     })
 
-    it('should extract keywords on save', function(done) {
-      foo.save(function(err, doc) {
+    it('should extract keywords on save', function (done) {
+      foo.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.keywords.toString(), ['like', 'cookies'].toString())
         done()
       })
     })
 
-    it('should manually extract keywords', function(done) {
+    it('should manually extract keywords', function (done) {
       var words = foo.extractKeywords('one two three')
       assert.strictEqual(words.toString(), ['one', 'two', 'three'].toString())
       done()
     })
   })
 
-  describe('#custom()', function() {
+  describe('#custom()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(keywords, {
       source: ['moo', 'cow']
@@ -64,13 +64,13 @@ describe('Keywords', function() {
         , cow: 'test õne twø lorem'
         })
     
-    before(function() {
-      BarModel.remove(function(err) {
+    before(function () {
+      BarModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
 
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.moo, 'object')
       assert.strictEqual(typeof FooSchema.paths.cow, 'object')
       assert.strictEqual(typeof FooSchema.paths.milk, 'object')
@@ -78,8 +78,8 @@ describe('Keywords', function() {
       done()
     })
 
-    it('should extract keywords on save', function(done) {
-      bar.save(function(err, doc) {
+    it('should extract keywords on save', function (done) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.milk.toString(), [
           'foo', 'bar', 'test', 'on', 'two', 'lorem'
@@ -88,13 +88,13 @@ describe('Keywords', function() {
       })
     })
 
-    it('should manually extract keywords', function(done) {
+    it('should manually extract keywords', function (done) {
       var words = bar.extractKeywords('a two three')
       assert.strictEqual(words.toString(), ['two', 'three'].toString())
       done()
     })
 
-    it('should manually extract keywords from model', function(done) {
+    it('should manually extract keywords from model', function (done) {
       var words = BarModel.extractKeywords('a two three')
       assert.strictEqual(words.toString(), ['two', 'three'].toString())
       assert.strictEqual(words.toString(), bar.extractKeywords('a two three').toString())

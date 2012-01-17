@@ -9,8 +9,8 @@ var assert = require('assert')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('ACL', function() {
-  describe('#default()', function() {
+describe('ACL', function () {
+  describe('#default()', function () {
     var FooSchema = new Schema({})
     FooSchema.plugin(acl)
     var FooModel = mongoose.model('foo', FooSchema)
@@ -19,21 +19,21 @@ describe('ACL', function() {
     foo.addAccess('blog')
     foo.addAccess('dashboard')
 
-    it('should have access to blog', function(done) {
+    it('should have access to blog', function (done) {
       foo.access('blog', function (bool) {
         assert.strictEqual(bool, true)
         done()
       })
     })
     
-    it('should have access to dashboard', function(done) {
+    it('should have access to dashboard', function (done) {
       foo.access('dashboard', function (bool) {
         assert.strictEqual(bool, true)
         done()
       })
     })
       
-    it('should no longer have access to dashboard', function(done) {
+    it('should no longer have access to dashboard', function (done) {
       foo.removeAccess('dashboard')
       foo.access('dashboard', function (bool) {
         assert.strictEqual(bool, false)
