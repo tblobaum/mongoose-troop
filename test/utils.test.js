@@ -48,12 +48,12 @@ describe('Utils', function () {
         done()
       })
     })
-      
+    
     it('should still work with populate', function (done) {
       arrmodel.save(function (err) {
         assert.strictEqual(err, null)
         othermodel.save(function (err) {
-            assert.strictEqual(err, null)
+          assert.strictEqual(err, null)
           bar.save(function (err) {
             assert.strictEqual(err, null)
             BarModel

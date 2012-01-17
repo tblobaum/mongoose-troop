@@ -14,7 +14,7 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.rest"> rest </a> (http or rpc controller)
 
 
-# acl <a name="Troop.acl" href="#Troop.acl"><small><sup>link</sup></small></a>
+# <a name="Troop.acl" href="#Troop.acl">acl</a>
 Simple access control list
 
 ## Methods
@@ -32,7 +32,7 @@ Remove `key` access to a Model instance
 Return or callback a boolean
 
 
-# basicAuth <a name="Troop.basicAuth" href="#Troop.basicAuth"><small><sup>link</sup></small></a>
+# <a name="Troop.basicAuth" href="#Troop.basicAuth">basicAuth</a>
 
 Simple authentication plugin
 
@@ -97,7 +97,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 ````
 
 
-# timestamp <a name="Troop.timestamp" href="#Troop.timestamp"><small><sup>link</sup></small></a>
+# <a name="Troop.timestamp" href="#Troop.timestamp">timestamp</a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
@@ -153,7 +153,7 @@ console.log(instance.slug) // `well-hello-there`
 ````
 
 
-# keywords <a name="Troop.keywords" href="#Troop.keywords"><small><sup>link</sup></small></a>
+# <a name="Troop.keywords" href="#Troop.keywords">keywords</a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
