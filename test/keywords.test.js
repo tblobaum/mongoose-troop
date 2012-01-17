@@ -56,10 +56,11 @@ describe('Keywords', function() {
     , minLength: 3
     , invalidChar: 'i'
     , override: true
+    , naturalize: true
     })
     var BarModel = mongoose.model('keywordBar', FooSchema)
       , bar = new BarModel({ 
-          moo: 'lorem ipsum! to a foo'
+          moo: 'fooed bars test one'
         , cow: 'test õne twø lorem'
         })
     
@@ -81,7 +82,7 @@ describe('Keywords', function() {
       bar.save(function(err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(doc.milk.toString(), [
-          'lorem', 'ipsumi', 'foo', 'test', 'one', 'two'
+          'foo', 'bar', 'test', 'on', 'two', 'lorem'
         ].toString())
         done()
       })
@@ -92,7 +93,13 @@ describe('Keywords', function() {
       assert.strictEqual(words.toString(), ['two', 'three'].toString())
       done()
     })
-  })
 
+    it('should manually extract keywords from model', function(done) {
+      var words = BarModel.extractKeywords('a two three')
+      assert.strictEqual(words.toString(), ['two', 'three'].toString())
+      assert.strictEqual(words.toString(), bar.extractKeywords('a two three').toString())
+      done()
+    })
+  })
   // cleanup()
 })

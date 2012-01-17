@@ -6,7 +6,7 @@ var util = require('util')
   , publish = redis.createClient()
   , subscribe = redis.createClient()
   , mongoose = require('mongoose')
-  , pubSub = require('../lib/publish')
+  , pubSub = require('../lib/pubsub')
   , common = require('./common')
   , db = common.db
   , cleanup = common.cleanup
@@ -384,6 +384,5 @@ describe('Publish', function() {
       })
     })
   })
-
   // cleanup()
 })

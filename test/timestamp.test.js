@@ -71,6 +71,5 @@ describe('Timestamp', function() {
       })
     })
   })
-
   // cleanup()
 })
