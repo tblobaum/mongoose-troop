@@ -10,7 +10,7 @@ clean:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter spec \
 		--ignore-leaks \
-		./test/cleanup.js
+		./test/support/cleanup.js
 
 
 .PHONY: test

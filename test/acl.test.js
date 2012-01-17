@@ -3,7 +3,7 @@
 var assert = require('assert')
   , mongoose = require('mongoose')
   , acl = require('../lib/acl')
-  , common = require('./common')
+  , common = require('./support/common')
   , db = common.db
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
