@@ -152,5 +152,4 @@ describe('BasicAuth', function() {
       })
     })
   })
-  // cleanup()
 })

@@ -15,7 +15,7 @@
   , "url": "git://github.com/tblobaum/mongoose-troop.git"
   }
 , "scripts": {
-    "test": "mocha -R spec --ignore-leaks"
+    "test": "make test && make clean"
   }
 , "engines": {
     "node": "0.x"

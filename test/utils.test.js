@@ -1,7 +1,5 @@
 
 // Dependencies
-delete require('mongoose')
-
 var util = require('util')
   , assert = require('assert')
   , mongoose = require('mongoose')
@@ -12,40 +10,34 @@ var util = require('util')
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
-    
 // Run tests
-describe('troop utility functions', function() {
+describe('Utils', function() {
   describe('#default()', function() {
     var BarSchema = new Schema({
-      other: {type:mongoose.Schema.ObjectId, ref:'other'},
-      arr: [{type:mongoose.Schema.ObjectId, ref:'arr'}]
+      other: {
+        type:mongoose.Schema.ObjectId
+      , ref:'other'
+      }
+    , arr: [{
+        type:mongoose.Schema.ObjectId
+      , ref:'arr'
+      }]
     })
     var OtherSchema = new Schema()
-    var ArrSchema = new Schema()
+      , ArrSchema = new Schema()
     
     trooputils(BarSchema)
-    mongoose.model('bar', BarSchema)
-    mongoose.model('other', OtherSchema)
-    mongoose.model('arr', ArrSchema)
     
-    var BarModel = mongoose.model('bar')
-    var OtherModel = mongoose.model('other')
-    var ArrModel = mongoose.model('arr')
-    var othermodel = new OtherModel()
-    var arrmodel = new ArrModel()
-    var bar = new BarModel({arr: [arrmodel], other: othermodel })
+    var BarModel = mongoose.model('bar', BarSchema)
+      , OtherModel = mongoose.model('other', OtherSchema)
+      , ArrModel = mongoose.model('arr', ArrSchema)
+      , othermodel = new OtherModel()
+      , arrmodel = new ArrModel()
+      , bar = new BarModel({arr: [arrmodel], other: othermodel })
 
-    it('should have a method called merge', function(done) {
+    it('should have custom methods', function(done) {
       assert.ok(bar.merge)
-      done()
-    })
-    
-    it('should have a method called removeDefaults', function(done) {
       assert.ok(bar.removeDefaults)
-      done()
-    })
-    
-    it('should have a method called getdbrefs', function(done) {
       assert.ok(bar.getdbrefs)
       done()
     })
@@ -58,14 +50,18 @@ describe('troop utility functions', function() {
     })
       
     it('should still work with populate', function(done) {
-      arrmodel.save(function (e) {
-        othermodel.save(function (e) {
-          bar.save(function (e) {
+      arrmodel.save(function (err) {
+        assert.strictEqual(err, null)
+        othermodel.save(function (err) {
+            assert.strictEqual(err, null)
+          bar.save(function (err) {
+            assert.strictEqual(err, null)
             BarModel
               .find()
               .populate('arr')
               .populate('other')
-              .run(function (e, docs) {
+              .run(function (err, docs) {
+                assert.strictEqual(err, null)
                 docs[docs.length-1].getdbrefs(function (refs) {
                   assert.notStrictEqual(Object.keys(refs), ["other", "arr"])
                   done()
@@ -74,8 +70,6 @@ describe('troop utility functions', function() {
           })
         })
       })
-    })
-        
+    }) 
   })
-
 })

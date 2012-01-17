@@ -1,5 +1,4 @@
  
-
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter spec \
@@ -13,4 +12,4 @@ clean:
 		./test/support/cleanup.js
 
 
-.PHONY: test
+.PHONY: test clean

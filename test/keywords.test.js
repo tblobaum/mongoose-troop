@@ -101,5 +101,4 @@ describe('Keywords', function() {
       done()
     })
   })
-  // cleanup()
 })

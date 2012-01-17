@@ -384,5 +384,4 @@ describe('Publish', function() {
       })
     })
   })
-  // cleanup()
 })

@@ -110,5 +110,4 @@ describe('Slugify', function() {
       done()
     })
   })
-  // cleanup()
 })
