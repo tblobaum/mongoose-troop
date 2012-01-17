@@ -4,34 +4,34 @@ var util = require('util')
   , assert = require('assert')
   , mongoose = require('mongoose')
   , timestamp = require('../lib/timestamp')
-  , common = require('./common')
+  , common = require('./support/common')
   , db = common.db
   , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Timestamp', function() {
-  describe('#default()', function() {
+describe('Timestamp', function () {
+  describe('#default()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(timestamp)
     var FooModel = mongoose.model('timeFoo', FooSchema)
       , bar = new FooModel()
     
-    before(function() {
-      FooModel.remove(function(err) {
+    before(function () {
+      FooModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
 
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.virtuals.created, 'object')
       assert.strictEqual(typeof FooSchema.paths.modified, 'object')
       done()
     })
 
-    it('should create the default attributes', function(done) {
-      bar.save(function(err, doc) {
+    it('should create the default attributes', function (done) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(util.isDate(doc.created), true)
         assert.strictEqual(util.isDate(doc.modified), true)
@@ -40,7 +40,7 @@ describe('Timestamp', function() {
     })
   })
 
-  describe('#custom()', function() {
+  describe('#custom()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(timestamp, {
       createdPath: 'oh'
@@ -50,20 +50,20 @@ describe('Timestamp', function() {
     var BarModel = mongoose.model('timeBar', FooSchema)
       , bar = new BarModel()
 
-    before(function() {
-      BarModel.remove(function(err) {
+    before(function () {
+      BarModel.remove(function (err) {
         assert.strictEqual(err, null)
       })
     })
 
-    it('should have custom properties', function(done) {
+    it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.paths.oh, 'object')
       assert.strictEqual(typeof FooSchema.paths.hai, 'object')
       done()
     })
 
-    it('should create custom attributes', function(done) {
-      bar.save(function(err, doc) {
+    it('should create custom attributes', function (done) {
+      bar.save(function (err, doc) {
         assert.strictEqual(err, null)
         assert.strictEqual(util.isDate(doc.oh), true)
         assert.strictEqual(util.isDate(doc.hai), true)
@@ -71,6 +71,4 @@ describe('Timestamp', function() {
       })
     })
   })
-
-  // cleanup()
 })
