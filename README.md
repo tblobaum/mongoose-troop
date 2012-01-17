@@ -271,15 +271,23 @@ and instances can be published/subscribed to.
 
 ## Methods
 
-### instance.publish(options)
+### instance.publish(doc, options, callback)
 
-### schema.subscribe()
+### instance.subscribe(callback)
 
-### schema.unsubscribe()
+### instance.unsubscribe(callback)
 
-### instance.subscribe()
+### instance.getChannel()
 
-### instance.unsubscribe()
+### instance.on(event, callback)
+
+### schema.subscribe(callback)
+
+### schema.unsubscribe(callback)
+
+### schema.getChannel()
+
+### schema.on(event, callback)
 
 ## Example
 
@@ -302,24 +310,35 @@ FooSchema.plugin(troop.publish, {
 
 mongoose.model('foo', FooSchema)
 
-var fooModel = db.model('foo')
+var FooModel = db.model('foo')
 
-fooModel.subscribe() // channel: 'foo'
+FooModel.subscribe() // channel: 'foos'
 
-fooModel.findOne({name: 'bar'}, function(err, instance) {
+FooModel.findOne({name: 'bar'}, function(err, instance) {
   // ...
 })
 ````
 
-once you have a mongoose instance you can now publish it
+Once you have a mongoose instance you can now publish it, by default, a model or 
+instance will publish to it's own channel
 
 ```javascript
-instance.publish({
+instance.publish(null, {
   method: 'save'
+}, function(err, count) {
+  // publishes to 'foos:4d6e5acebcd1b3fac9000007'
 })
 ````
 
-or
+You can also publish other documents to other models or instances
+
+```javascript
+FooModel.publish(instance, function(err, count) {
+  // publishes to 'foos'
+})
+````
+
+or, if you have enabled `hooks`
 
 ```javascript
 instance.save()
@@ -328,7 +347,7 @@ instance.save()
 You can also subscribe on the instance level
 
 ```javascript
-instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
+instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 ````
 
 
