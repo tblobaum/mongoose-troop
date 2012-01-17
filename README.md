@@ -13,6 +13,7 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.pubsub"> pubsub </a> (message passing)
 * <a href="#Troop.rest"> rest </a> (http or rpc controller)
 
+***
 
 # <a name="Troop.acl" href="#Troop.acl">acl</a>
 Simple access control list
@@ -31,6 +32,8 @@ Remove `key` access to a Model instance
 
 Return or callback a boolean
 
+
+***
 
 # <a name="Troop.basicAuth" href="#Troop.basicAuth">basicAuth</a>
 
@@ -97,6 +100,8 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 ````
 
 
+***
+
 # <a name="Troop.timestamp" href="#Troop.timestamp">timestamp</a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
@@ -153,6 +158,8 @@ console.log(instance.slug) // `well-hello-there`
 ````
 
 
+***
+
 # <a name="Troop.keywords" href="#Troop.keywords">keywords</a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
@@ -202,7 +209,9 @@ fooModel.find({ keywords: { $in: fooModel.extractKeywords(val) }}, function(docs
 ````
 
 
-# utils <a name="Troop.utils" href="#Troop.utils"><small><sup>link</sup></small></a>
+***
+
+# <a name="Troop.utils" href="#Troop.utils">utils</a>
 
 ## merge
 
@@ -239,7 +248,10 @@ Remove all of the default values from your model instance.
 
 * `debug` verbose logging of current actions (optional, default `false`)
 
-# publish <a name="Troop.publish" href="#Troop.publish"><small><sup>link</sup></small></a>
+
+***
+
+# <a name="Troop.publish" href="#Troop.publish">publish</a>
 
 Plugin to publish/subscribe from a model or instance level, also enabling a model 
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
@@ -318,7 +330,9 @@ instance.subscribe() // channel: 'foo:4d6e5acebcd1b3fac9000007'
 ````
 
 
-# rest <a name="Troop.rest" href="#Troop.rest"><small><sup>link</sup></small></a>
+***
+
+# <a name="Troop.rest" href="#Troop.rest">rest</a>
 
 ## Options
 
