@@ -3,18 +3,18 @@
 var util = require('util')
   , assert = require('assert')
   , mongoose = require('mongoose')
-  , paginate = require('../lib/paginate')
+  , pagination = require('../lib/pagination')
   , common = require('./support/common')
   , db = common.db
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Paginate', function () {
+describe('Pagination', function () {
   var FooSchema = new Schema({ count: Number })
   
   describe('#default()', function () {
-    FooSchema.plugin(paginate)
+    FooSchema.plugin(pagination)
     var FooModel = mongoose.model('slugFoo', FooSchema)
     
     before(function () {
@@ -34,17 +34,14 @@ describe('Paginate', function () {
     })
     
     it('should have custom properties', function (done) {
-      assert.strictEqual(typeof FooSchema.statics.paginate, 'function')
-      assert.strictEqual(typeof FooSchema.statics.page, 'function')
-      assert.strictEqual(typeof FooSchema.statics.nextPage, 'function')
-      assert.strictEqual(typeof FooSchema.statics.prevPage, 'function')
+      assert.strictEqual(typeof FooSchema.statics.pagination, 'function')
       assert.strictEqual(typeof FooSchema.statics.firstPage, 'function')
       assert.strictEqual(typeof FooSchema.statics.lastPage, 'function')
       done()
     })
 
     it('should paginate', function (done) {
-      FooModel.paginate({
+      FooModel.pagination({
         page: 1
       , limit: 10
       }, function (err, docs, total, pages, current) {
@@ -58,7 +55,7 @@ describe('Paginate', function () {
     })
 
     it('should paginate', function (done) {
-      FooModel.paginate({
+      FooModel.pagination({
         page: 1
       , limit: 25
       }, function (err, docs, total, pages, current) {
@@ -66,39 +63,6 @@ describe('Paginate', function () {
         assert.strictEqual(total, 55)
         assert.strictEqual(pages, 3)
         assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 25)
-        done()
-      })
-    })
-
-    it('should go to page 2', function (done) {
-      FooModel.nextPage(function (err, docs, total, pages, current) {
-        assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 2)
-        assert.strictEqual(docs.length, 25)
-        done()
-      })
-    })
-
-    it('should go to page 3', function (done) {
-      FooModel.nextPage(function (err, docs, total, pages, current) {
-        assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 3)
-        assert.strictEqual(docs.length, 5)
-        done()
-      })
-    })
-
-    it('should go back to page 2', function (done) {
-      FooModel.prevPage(function (err, docs, total, pages, current) {
-        assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 2)
         assert.strictEqual(docs.length, 25)
         done()
       })
