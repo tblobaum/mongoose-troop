@@ -6,7 +6,6 @@ var util = require('util')
   , basicAuth = require('../lib/basicAuth')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 

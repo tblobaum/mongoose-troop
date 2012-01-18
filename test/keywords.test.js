@@ -6,7 +6,6 @@ var util = require('util')
   , keywords = require('../lib/keywords')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
@@ -30,6 +29,7 @@ describe('Keywords', function () {
       assert.strictEqual(typeof FooSchema.paths.title, 'object')
       assert.strictEqual(typeof FooSchema.paths.keywords, 'object')
       assert.strictEqual(typeof FooSchema.methods.extractKeywords, 'function')
+      assert.strictEqual(typeof FooSchema.statics.extractKeywords, 'function')
       done()
     })
 
@@ -42,8 +42,9 @@ describe('Keywords', function () {
     })
 
     it('should manually extract keywords', function (done) {
-      var words = foo.extractKeywords('one two three')
-      assert.strictEqual(words.toString(), ['one', 'two', 'three'].toString())
+      var str = 'one two three'
+      assert.strictEqual(foo.extractKeywords(str).toString(), ['one', 'two', 'three'].toString())
+      assert.strictEqual(FooModel.extractKeywords(str).toString(), ['one', 'two', 'three'].toString())
       done()
     })
   })
@@ -89,8 +90,8 @@ describe('Keywords', function () {
     })
 
     it('should manually extract keywords', function (done) {
-      var words = bar.extractKeywords('a two three')
-      assert.strictEqual(words.toString(), ['two', 'three'].toString())
+      var str = 'a two three'
+      assert.strictEqual(bar.extractKeywords(str).toString(), ['two', 'three'].toString())
       done()
     })
 

@@ -9,7 +9,6 @@ var util = require('util')
   , pubSub = require('../lib/pubsub')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 

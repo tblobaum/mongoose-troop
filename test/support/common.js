@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose')
   , assert = require('assert')
-  , db = mongoose.connect('mongodb://localhost/mongoose_troop')
+  , db = mongoose.connect(process.env.MONGO_DB_URI || 'mongodb://localhost/mongoose_troop')
 
 function cleanup() {
   describe('#cleanup()', function() {

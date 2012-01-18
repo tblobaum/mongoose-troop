@@ -6,7 +6,6 @@ var util = require('util')
   , timestamp = require('../lib/timestamp')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
