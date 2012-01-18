@@ -4,14 +4,15 @@
 A collection of handy plugins for mongoose
 
 ## Contents
-* <a href="#Troop.acl"> acess control list </a>
-* <a href="#Troop.basicAuth"> authentication </a>
-* <a href="#Troop.timestamp"> timestamps </a>
+* <a href="#Troop.acl"> acl </a>
+* <a href="#Troop.basicAuth"> basicAuth </a> (simple authentication and registration)
+* <a href="#Troop.timestamp"> timestamp </a> (automatic created and modified timestamps)
 * <a href="#Troop.slugify"> slugify </a> (url-friendly copies of string properties)
 * <a href="#Troop.keywords"> keywords </a> (search-friendly array of stemmed words from string properties)
-* <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
 * <a href="#Troop.pubsub"> pubsub </a> (message passing)
+* <a href="#Troop.pagination"> pagination </a> (query pagination)
 * <a href="#Troop.rest"> rest </a> (http or rpc controller)
+* <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
 
 ***
 
@@ -73,9 +74,7 @@ var mongoose = require('mongoose')
 
 UserSchema.plugin(troop.basicAuth)
 
-db.model('user', UserSchema)
-
-var User = db.model('user')
+var User = mongoose.model('user', UserSchema)
 
 User.register({
   username: 'foo'
@@ -145,6 +144,12 @@ Converts `this is a title` to `this-is-a-title`
 * `invalidChar` invalid character replacement (optional, default ``)
 * `override` override slug field on source path change (optional, default `false`)
 
+## Methods
+
+### instance.slugify(string)
+
+### model.slugify(string)
+
 ## Example
 
 ```javascript
@@ -156,7 +161,9 @@ FooSchema.plugin(troop.slugify)
 
 var instance = new FooSchema({title: 'well hello there!'})
 
-console.log(instance.slug) // `well-hello-there`
+instance.save(function(err, doc) {
+  console.log(doc.slug) // `well-hello-there`
+})
 ````
 
 
@@ -172,12 +179,16 @@ Turns `fooed bars` into `['foo', 'bar']`
 ## Options
 
 * `target` schema path for keyword destination (optional, default `keywords`)
-* `source` schema path for extracting keywords
+* `source` schema path for extracting keywords, can be an array to specify multiple paths
 * `minLength` minimum string length to be used as a keyword (optional, default `2`)
+* `invalidChar` replacement char for invalid chars (optional, default ``)
+* `naturalize` specifies whether to use a porter stemmer for keywords (optional, default `false`)
 
 ## Methods
 
 ### instance.extractKeywords(str)
+
+### model.extractKeywords(str)
 
 Manually calculate a keyword array with a given string
 
@@ -196,9 +207,7 @@ FooSchema.plugin(troop.keywords, {
   source: 'text'
 })
 
-mongoose.model('foo', FooSchema)
-
-var fooModel = db.model('foo')
+var fooModel = mongoose.model('foo', FooSchema)
   , instance = new FooSchema({text: 'i am the batman'})
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
@@ -209,46 +218,6 @@ fooModel.find({ keywords: { $in: fooModel.extractKeywords(val) }}, function(docs
   // ...
 })
 ````
-
-
-***
-
-# <a name="Troop.utils" href="#Troop.utils">utils</a>
-
-## merge
-
-Merge JSON into your object more easily.
-
-```javascript
-instance.merge({title:'A new title', description:'A new description'}).save()
-````
-
-### Options
-
-* `debug` verbose logging of current actions (optional, default `false`)
-
-## getdbrefs
-
-Get the dbrefs from a schema
-
-```javascript
-instance.getdbrefs(function (refs) {
-  console.log(refs)
-  // ..
-  
-})
-
-```
-
-## removeDefaults
-
-Remove all of the default values from your model instance.
-
-`instance.removeDefaults().save()`
-
-### Options
-
-* `debug` verbose logging of current actions (optional, default `false`)
 
 
 ***
@@ -281,13 +250,13 @@ and instances can be published/subscribed to.
 
 ### instance.on(event, callback)
 
-### schema.subscribe(callback)
+### model.subscribe(callback)
 
-### schema.unsubscribe(callback)
+### model.unsubscribe(callback)
 
-### schema.getChannel()
+### model.getChannel()
 
-### schema.on(event, callback)
+### model.on(event, callback)
 
 ## Example
 
@@ -308,9 +277,7 @@ FooSchema.plugin(troop.publish, {
 , subscribe: subscribe
 })
 
-mongoose.model('foo', FooSchema)
-
-var FooModel = db.model('foo')
+var FooModel = mongoose.model('foo', FooSchema)
 
 FooModel.subscribe() // channel: 'foos'
 
@@ -353,6 +320,102 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 
 ***
 
+# <a name="Troop.pagination" href="#Troop.pagination">pagination</a>
+
+Simple query pagination routines.
+
+## Options
+
+* `defaultQuery` Query to use if not specified (optional, default `{}`)
+* `defaultLimit` Results per page to use if not specified (optional, default `10`)
+* `defaultFields` Fields to use if not specified (optional, default `[]`)
+* `remember` Remember the last options used for `query`, `limit`, and `fields` (optional, default `false`)
+
+## Methods
+
+### model.paginate(options, callback)
+
+### model.firstPage(options, callback)
+
+### model.lastPage(options, callback)
+
+## Example
+
+Assume that we have a collection with 55 records in it for the following example,
+where the `count` field is incremented by 1 for each record, starting at 1.
+
+```javascript
+var mongoose = require('mongoose')
+  , troop = require('mongoose-troop')
+  , db = mongoose.connect()
+
+var FooSchema = new mongoose.Schema({
+  name: String
+, count: Number
+})
+
+FooSchema.plugin(troop.pagination)
+
+var FooModel = mongoose.model('foo', FooSchema)
+
+FooModel.paginate({ page: 1 }, function (err, docs, count, pages, current) {
+
+  // docs.length = 10
+  // count = 55
+  // pages = 6
+  // current = 1
+
+})
+````
+
+Which, since using the default options, can also be written as:
+
+```javascript
+FooModel.firstPage(function (err, docs, count, pages, current) {
+  // ...
+})
+````
+
+Or, if you wanted the last page:
+
+```javascript
+FooModel.lastPage(function (err, docs, count, pages, current) {
+  // docs.length = 5
+  // current = 6
+})
+````
+
+A more verbose pagination call
+
+```javascript
+FooModel.paginate({
+  page: 2
+, query: { count: { $gt: 25 } }
+, limit: 25
+, fields: ['name']
+}, function(err, docs, count, pages, current) {
+  
+  // docs.length = 5
+  // count = 30
+  // pages = 2
+  // current = 2
+
+})
+````
+
+## Note
+
+If using the `remember` option, the plugin will cache all of the options you give it 
+each time you pass them in (except for the page), this can be handy if the params are 
+going to be the same each time, if they are different you should not use this option.
+
+Also, when on the last page, the plugin will return the trailing number of documents, 
+in the example above the `lastPage` method returned 5 documents, it will never return 
+a full set specified by the `limit` when this is the case.
+
+
+***
+
 # <a name="Troop.rest" href="#Troop.rest">rest</a>
 
 ## Options
@@ -360,6 +423,47 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 * `debug` verbose logging of current actions (optional, default `false`)
 
 Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
+
+
+***
+
+# <a name="Troop.utils" href="#Troop.utils">utils</a>
+
+## merge
+
+Merge JSON into your object more easily.
+
+```javascript
+instance.merge({title:'A new title', description:'A new description'}).save()
+````
+
+### Options
+
+* `debug` verbose logging of current actions (optional, default `false`)
+
+## getdbrefs
+
+Get the dbrefs from a schema
+
+```javascript
+instance.getdbrefs(function (refs) {
+  console.log(refs)
+  // ..
+  
+})
+
+```
+
+## removeDefaults
+
+Remove all of the default values from your model instance.
+
+`instance.removeDefaults().save()`
+
+### Options
+
+* `debug` verbose logging of current actions (optional, default `false`)
+
 
 ## Contributing
 
