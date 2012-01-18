@@ -15,7 +15,7 @@ describe('Pagination', function () {
   
   describe('#default()', function () {
     FooSchema.plugin(pagination)
-    var FooModel = mongoose.model('slugFoo', FooSchema)
+    var FooModel = mongoose.model('paginateFoo', FooSchema)
     
     before(function () {
       FooModel.remove(function (err) {
@@ -34,14 +34,14 @@ describe('Pagination', function () {
     })
     
     it('should have custom properties', function (done) {
-      assert.strictEqual(typeof FooSchema.statics.pagination, 'function')
+      assert.strictEqual(typeof FooSchema.statics.paginate, 'function')
       assert.strictEqual(typeof FooSchema.statics.firstPage, 'function')
       assert.strictEqual(typeof FooSchema.statics.lastPage, 'function')
       done()
     })
 
     it('should paginate', function (done) {
-      FooModel.pagination({
+      FooModel.paginate({
         page: 1
       , limit: 10
       }, function (err, docs, total, pages, current) {
@@ -55,7 +55,7 @@ describe('Pagination', function () {
     })
 
     it('should paginate', function (done) {
-      FooModel.pagination({
+      FooModel.paginate({
         page: 1
       , limit: 25
       }, function (err, docs, total, pages, current) {
