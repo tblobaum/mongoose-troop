@@ -10,7 +10,7 @@ var util = require('util')
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Keywords', function () {
+describe('REST', function () {
   describe('#default()', function () {
     var FooSchema = new Schema({
       count: Number
@@ -83,7 +83,9 @@ describe('Keywords', function () {
         assert.strictEqual(err, null)
         assert.equal(doc.title, 'new')
         doc.title = 'put'
-        FooModel.put(doc.toObject, function (err, ok) {
+        delete doc.count
+
+        FooModel.put(doc.toObject(), function (err, ok) {
           assert.strictEqual(err, null)
           assert.ok(ok)
         })
@@ -107,6 +109,17 @@ describe('Keywords', function () {
       }, function (err, docs) {
         assert.strictEqual(err, null)
         assert.strictEqual(docs.length, 10)
+        done()
+      })
+    })
+
+    it('should search', function (done) {
+      FooModel.search({
+        query: {title: 'put'}
+      , limit: 10
+      , page: 2
+      }, function (err, docs) {
+        assert.strictEqual(err, null)
         done()
       })
     })
