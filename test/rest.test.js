@@ -51,6 +51,11 @@ describe('Keywords', function () {
       assert.strictEqual(typeof FooSchema.statics.del, 'function')
       assert.strictEqual(typeof FooSchema.statics.search, 'function')
       assert.strictEqual(typeof FooSchema.statics.bulk, 'function')
+
+      // Pagination properties
+      assert.strictEqual(typeof FooSchema.statics.paginate, 'function')
+      assert.strictEqual(typeof FooSchema.statics.firstPage, 'function')
+      assert.strictEqual(typeof FooSchema.statics.lastPage, 'function')
       done()
     })
 
@@ -105,7 +110,5 @@ describe('Keywords', function () {
         done()
       })
     })
-
-    FooModel.controller()
   })
 })
