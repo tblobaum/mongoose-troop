@@ -105,5 +105,7 @@ describe('Keywords', function () {
         done()
       })
     })
+
+    FooModel.controller()
   })
 })
