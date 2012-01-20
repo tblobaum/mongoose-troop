@@ -12,6 +12,7 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.pubsub"> pubsub </a> (message passing)
 * <a href="#Troop.pagination"> pagination </a> (query pagination)
 * <a href="#Troop.rest"> rest </a> (http or rpc controller)
+* <a href="#Troop.obfuscate"> obfuscate </a> (objectID encryption / decryption)
 * <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
 
 ***
@@ -427,7 +428,7 @@ Create a REST-ful controller for your models for use with flatiron/director, exp
 
 ***
 
-# <a name="Troop.obfuscate" href="#Troop.obfuscate">Obfuscate</a>
+# <a name="Troop.obfuscate" href="#Troop.obfuscate">obfuscate</a>
 
 ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
 any ObjectID that is found to prevent leaking any server information contained in the ID, will 

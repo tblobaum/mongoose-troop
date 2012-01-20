@@ -53,6 +53,7 @@ describe('Obfuscate', function () {
     var crypted
     it('should encrypt with getter', function (done) {
       crypted = bar.obfuscate
+      console.log('crypted: ', crypted)
       assert.notStrictEqual(crypted._id, bar._id.toString())
       assert.notStrictEqual(crypted.foo, bar.foo.toString())
       assert.notStrictEqual(crypted.foos[0], foo2._id.toString())
@@ -64,7 +65,7 @@ describe('Obfuscate', function () {
     it('should decrypt with setter', function (done) {
       var blah = new BarModel()
       blah.deobfuscate = crypted
-
+      console.log('decrypted: ', blah)
       assert.strictEqual(blah._id.toString(), bar._id.toString())
       assert.strictEqual(blah.foo.toString(), bar.foo.toString())
       assert.strictEqual(blah.foos[0].toString(), foo2._id.toString())
