@@ -53,19 +53,19 @@ describe('Obfuscate', function () {
     var crypted
     it('should encrypt with getter', function (done) {
       crypted = bar.obfuscate
-      console.log('crypted: ', crypted)
-      assert.notStrictEqual(crypted._id, bar._id.toString())
-      assert.notStrictEqual(crypted.foo, bar.foo.toString())
-      assert.notStrictEqual(crypted.foos[0], foo2._id.toString())
-      assert.notStrictEqual(crypted.foos[1], foo3._id.toString())
-      assert.notStrictEqual(crypted.another[0]._id, foo._id.toString())
+      
+      assert.notStrictEqual(crypted._id.toString(), bar._id.toString())
+      assert.notStrictEqual(crypted.foo.toString(), bar.foo.toString())
+      assert.notStrictEqual(crypted.foos[0].toString(), foo2._id.toString())
+      assert.notStrictEqual(crypted.foos[1].toString(), foo3._id.toString())
+      assert.notStrictEqual(crypted.another[0]._id.toString(), foo._id.toString())
       done()
     })
 
     it('should decrypt with setter', function (done) {
       var blah = new BarModel()
       blah.deobfuscate = crypted
-      console.log('decrypted: ', blah)
+
       assert.strictEqual(blah._id.toString(), bar._id.toString())
       assert.strictEqual(blah.foo.toString(), bar.foo.toString())
       assert.strictEqual(blah.foos[0].toString(), foo2._id.toString())
@@ -78,11 +78,11 @@ describe('Obfuscate', function () {
     it('should encrypt with model', function (done) {
       another = BarModel.encode(bar, true)
 
-      assert.notStrictEqual(another._id, bar._id.toString())
-      assert.notStrictEqual(another.foo, bar.foo.toString())
-      assert.notStrictEqual(another.foos[0], foo2._id.toString())
-      assert.notStrictEqual(another.foos[1], foo3._id.toString())
-      assert.notStrictEqual(another.another[0]._id, foo._id.toString())
+      assert.notStrictEqual(another._id.toString(), bar._id.toString())
+      assert.notStrictEqual(another.foo.toString(), bar.foo.toString())
+      assert.notStrictEqual(another.foos[0].toString(), foo2._id.toString())
+      assert.notStrictEqual(another.foos[1].toString(), foo3._id.toString())
+      assert.notStrictEqual(another.another[0]._id.toString(), foo._id.toString())
       done()
     })
 
