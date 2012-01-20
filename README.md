@@ -420,9 +420,44 @@ a full set specified by the `limit` when this is the case.
 
 ## Options
 
-* `debug` verbose logging of current actions (optional, default `false`)
+* `pagination` options to send to the pagination plugin above (optional, see plugin defaults above)
 
-Create a RESTful controller for your models for use with flatiron/director, express, dnode or socket.io
+Create a REST-ful controller for your models for use with flatiron/director, express, dnode or socket.io
+
+
+***
+
+# <a name="Troop.obfuscate" href="#Troop.obfuscate">Obfuscate</a>
+
+ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
+any ObjectID that is found to prevent leaking any server information contained in the ID, will 
+work with embedded documents as well as DBRefs.
+
+## Options
+
+* `encryptPath` Getter path for returning encrypted document (optional, default `obfuscate`)
+* `decryptPath` Setter path for decrypting an object and assigning it to the document (optional, default `deobfuscate`)
+* `algorithm` Encryption algorithm to use (optional, default `aes-256-cbc`)
+* `key` Encryption key to be used (optional, default `secret`)
+* `from` Encoding of the field to be encrypted (optional, default `utf8`)
+* `to` Encoding of the encrypted field (optional, default `hex`)
+
+## Methods
+
+###model.encrypt(string)
+
+###model.decrypt(string)
+
+###model.encode(object, boolean)
+
+###instance.encrypt(string)
+
+###instance.decrypt(string)
+
+## Example
+
+```javascript
+````
 
 
 ***
