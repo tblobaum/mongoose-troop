@@ -14,7 +14,7 @@ describe('Pagination', function () {
   describe('#default()', function () {
     var FooSchema = new Schema({ count: Number })
     FooSchema.plugin(pagination)
-    var FooModel = mongoose.model('paginateFoo', FooSchema)
+    var FooModel = db.model('paginateFoo', FooSchema)
     
     before(function () {
       FooModel.remove(function (err) {
@@ -101,7 +101,7 @@ describe('Pagination', function () {
     , defaultFields: ['count']
     , remember: true
     })
-    var BarModel = mongoose.model('paginateBar', FooSchema)
+    var BarModel = db.model('paginateBar', FooSchema)
     
     before(function () {
       BarModel.remove(function (err) {

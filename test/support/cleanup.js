@@ -4,14 +4,13 @@
 
 var assert = require('assert')
   , db = require('./common').db
+  , dropDatabase = require('../../helpers').dropDatabase
+  , dropCollections = require('../../helpers').dropCollections
 
 describe('#cleanup()', function() {
   it('should drop the database and disconnect', function(done) {
-    db.connection.db.executeDbCommand({
-      dropDatabase: 1
-    }, function(err, result) {
+    dropDatabase(db, function(err, result) {
       assert.strictEqual(err, null)
-      db.disconnect()
       done()
     })
   })

@@ -14,7 +14,7 @@ describe('Timestamp', function () {
   describe('#default()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(timestamp)
-    var FooModel = mongoose.model('timeFoo', FooSchema)
+    var FooModel = db.model('timeFoo', FooSchema)
       , bar = new FooModel()
     
     before(function () {
@@ -46,7 +46,7 @@ describe('Timestamp', function () {
     , modifiedPath: 'hai'
     , useVirtual: false
     })
-    var BarModel = mongoose.model('timeBar', FooSchema)
+    var BarModel = db.model('timeBar', FooSchema)
       , bar = new BarModel()
 
     before(function () {

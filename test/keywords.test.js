@@ -16,7 +16,7 @@ describe('Keywords', function () {
     FooSchema.plugin(keywords, {
       source: 'title'
     })
-    var FooModel = mongoose.model('keywordFoo', FooSchema)
+    var FooModel = db.model('keywordFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
     before(function () {
@@ -59,7 +59,7 @@ describe('Keywords', function () {
     , override: true
     , naturalize: true
     })
-    var BarModel = mongoose.model('keywordBar', FooSchema)
+    var BarModel = db.model('keywordBar', FooSchema)
       , bar = new BarModel({ 
           moo: 'fooed bars test one'
         , cow: 'test õne twø lorem'

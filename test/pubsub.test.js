@@ -22,7 +22,7 @@ describe('Publish', function () {
       publish: publish
     , subscribe: subscribe
     })
-    var FooModel = mongoose.model('publishFoo', FooSchema)
+    var FooModel = db.model('publishFoo', FooSchema)
       , foo = new FooModel({ title: 'monster trucks' })
       , expectedChan = 'publishfoos'
     
@@ -131,7 +131,7 @@ describe('Publish', function () {
     , prefix: 'test'
     , channel: 'mouse'
     })
-    var BarModel = mongoose.model('publishBar', FooSchema)
+    var BarModel = db.model('publishBar', FooSchema)
       , bar = new BarModel({ title: 'hey there' })
       , expectedChan = 'test_mouse'
     
@@ -250,7 +250,7 @@ describe('Publish', function () {
     , prefix: 'breaking'
     , channel: 'bad'
     })
-    var BlahModel = mongoose.model('publishBlah', FooSchema)
+    var BlahModel = db.model('publishBlah', FooSchema)
       , blah = new BlahModel({ title: 'hey there' })
       , expectedChan = 'breaking-bad'
     
@@ -308,7 +308,7 @@ describe('Publish', function () {
   //   , auto: true
   //   , hook: 'post'
   //   })
-  //   var TestModel = mongoose.model('publishTest', FooSchema)
+  //   var TestModel = db.model('publishTest', FooSchema)
   //     , expectedChan = 'publishtests'
 
   //   it('should publish on init', function (done) {
@@ -352,7 +352,7 @@ describe('Publish', function () {
     , auto: true
     , hook: 'pre'
     })
-    var HelloModel = mongoose.model('publishHello', FooSchema)
+    var HelloModel = db.model('publishHello', FooSchema)
       , expectedChan = 'publishhellos'
     
     it('should publish on remove', function (done) {

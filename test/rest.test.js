@@ -17,7 +17,7 @@ describe('REST', function () {
     , title: String
     })
     FooSchema.plugin(rest)
-    var FooModel = mongoose.model('restFoo', FooSchema)
+    var FooModel = db.model('restFoo', FooSchema)
       , foo = new FooModel({
           count: 200
         , title: 'new'

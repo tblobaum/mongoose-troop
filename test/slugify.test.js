@@ -15,7 +15,7 @@ describe('Slugify', function () {
   
   describe('#default()', function () {
     FooSchema.plugin(slugify)
-    var FooModel = mongoose.model('slugFoo', FooSchema)
+    var FooModel = db.model('slugFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
     before(function () {
@@ -68,7 +68,7 @@ describe('Slugify', function () {
     , spaceChar: '_'
     , override: true
     })
-    var BarModel = mongoose.model('slugBar', FooSchema)
+    var BarModel = db.model('slugBar', FooSchema)
       , bar = new BarModel({ 
           hey: 'lorem ipsum! twø a foo'
         })

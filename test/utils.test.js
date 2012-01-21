@@ -27,12 +27,12 @@ describe('Utils', function () {
     
     trooputils(BarSchema)
     
-    var BarModel = mongoose.model('bar', BarSchema)
-      , OtherModel = mongoose.model('other', OtherSchema)
-      , ArrModel = mongoose.model('arr', ArrSchema)
+    var BarModel = db.model('utilsBar', BarSchema)
+      , OtherModel = db.model('utilsOther', OtherSchema)
+      , ArrModel = db.model('utilsArr', ArrSchema)
       , othermodel = new OtherModel()
       , arrmodel = new ArrModel()
-      , bar = new BarModel({arr: [arrmodel], other: othermodel })
+      , bar = new BarModel({ arr: [arrmodel], other: othermodel })
 
     it('should have custom methods', function (done) {
       assert.ok(bar.merge)
@@ -57,12 +57,15 @@ describe('Utils', function () {
             assert.strictEqual(err, null)
             BarModel
               .find()
-              .populate('arr')
-              .populate('other')
+              .populate('utilsArr')
+              .populate('utilsOther')
               .run(function (err, docs) {
                 assert.strictEqual(err, null)
                 docs[docs.length-1].getdbrefs(function (refs) {
-                  assert.notStrictEqual(Object.keys(refs), ["other", "arr"])
+                  assert.notStrictEqual(Object.keys(refs), [
+                    'utilsOther'
+                  , 'utilsArr'
+                  ])
                   done()
                 })
               })
