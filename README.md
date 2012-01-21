@@ -458,7 +458,131 @@ work with embedded documents as well as DBRefs.
 ## Example
 
 ```javascript
+var mongoose = require('mongoose')
+  , troop = require('mongoose-troop')
+  , db = mongoose.connect()
+
+var BarSchema = new mongoose.Schema()
+  , UserSchema = new mongoose.Schema()
+  , SessionSchema = new mongoose.Schema()
+
+// A complicated schema
+var FooSchema = new mongoose.Schema({
+  dbref: { type: ObjectId, ref: BarSchema }
+, dbrefArray: [{ type: ObjectId, ref: BarSchema }]
+, nested: {
+    dbref: { type: ObjectId, ref: BarSchema }
+  , dbrefArray: [{ type: ObjectId, ref: BarSchema }]
+  , embedded: [FooSchema]
+}
+, embedded: [FooSchema]
+, user: { 
+    id: { type: Schema.ObjectId, ref: 'user' }
+  , session: {
+      sid: { type: Schema.ObjectId, ref: 'session' }
+    }
+  }
+})
+
+FooSchema.plugin(troop.obfuscate)
+
+var FooModel = mongoose.model('foo', FooSchema)
+  , BarModel = mongoose.model('bar', BarSchema)
+  , UserModel = mongoose.model('user', UserSchema)
+  , SessionSchema = mongoose.model('session', SessionSchema)
+
+var bar = new BarModel()
+  , user = new UserModel()
+  , session = new SessionModel()
+
+var foo = new FooModel({
+  dbref: bar
+, dbrefArray: [foo2, foo3]
+, embeddedArray: [foo]
+, nested: {
+    dbref: foo
+  , dbrefArray: [foo2, foo3]
+  , nested: [foo]
+}
+, embedded: {
+    id: user._id
+  , session: { sid: session._id }
+  }
+})
+
+var obfuscated = foo.obfuscate
 ````
+
+Now we should have an obfuscated object like so
+
+```json
+{
+  _id: '0edaf91b2b5fa8c06413cdbf9ebed72a90a2c5ae4fe9b837d24865bd92c56ab2'
+, dbref: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
+, dbrefArray: [
+    '0edaf91b2b5fa8c06413cdbf9ebed72a59ea2f1567c4ba640c02b02bb73f36d7'
+  , '0edaf91b2b5fa8c06413cdbf9ebed72aec369726048f7aa6cae9e8d20d7b2344'
+  ]
+, embedded: {
+    id: '0edaf91b2b5fa8c06413cdbf9ebed72a340f055306b64aeececd8835755008fc'
+  , session: {
+      sid: '0edaf91b2b5fa8c06413cdbf9ebed72a9f324d66d3a0e0d1c2fdd12d65efa3ea'
+    }
+  }
+, embeddedArray: [{
+    _id: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
+  }]
+, nested: {
+    dbref: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
+  , dbrefArray: [
+      '0edaf91b2b5fa8c06413cdbf9ebed72a59ea2f1567c4ba640c02b02bb73f36d7'
+    , '0edaf91b2b5fa8c06413cdbf9ebed72aec369726048f7aa6cae9e8d20d7b2344'
+    ]
+  , embeddedArray: [{
+      _id: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
+    }]
+  }
+}
+````
+
+To deobfuscate the object, we can assign it back to the original model, or to another.
+
+```javascript
+var emptyFoo = new FooModel()
+
+emptyFoo.deobfuscate = obfuscated
+````
+
+Which should give us back the original object
+
+```json
+{ 
+  _id: 4f1b234afe789543a3000008
+, dbref: 4f1b234afe789543a3000003
+, dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
+, embedded: { 
+    id: 4f1b234afe789543a3000007
+  , session: { 
+      sid: 4f1b234afe789543a3000006 
+    }
+  }
+, embeddedArray:  [{
+    _id: 4f1b234afe789543a3000003
+  }]
+, nested: { 
+    dbref: 4f1b234afe789543a3000003
+  , dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
+  , embeddedArray: [{
+      _id: 4f1b234afe789543a3000003
+    }]
+  }
+}
+````
+
+## Note
+
+This plugin will not work with `Mixed` type schema paths, you will have to obfuscate
+those manually
 
 
 ***
