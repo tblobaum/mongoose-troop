@@ -6,7 +6,6 @@ var util = require('util')
   , basicAuth = require('../lib/basicAuth')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
@@ -15,7 +14,7 @@ describe('BasicAuth', function () {
   describe('#default()', function () {
     var FooSchema = new Schema()
     FooSchema.plugin(basicAuth)
-    var FooModel = mongoose.model('authFoo', FooSchema)
+    var FooModel = db.model('authFoo', FooSchema)
     var foo = new FooModel({ 
       username: 'sorensen'
     , password: 'beau'
@@ -105,7 +104,7 @@ describe('BasicAuth', function () {
     , hashPath: 'key'
     , workFactor: 1
     })
-    var BarModel = mongoose.model('authBar', FooSchema)
+    var BarModel = db.model('authBar', FooSchema)
     var bar = new BarModel({ 
       login: 'foo'
     , password: 'bar'

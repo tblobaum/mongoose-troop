@@ -6,7 +6,6 @@ var util = require('util')
   , keywords = require('../lib/keywords')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
@@ -17,7 +16,7 @@ describe('Keywords', function () {
     FooSchema.plugin(keywords, {
       source: 'title'
     })
-    var FooModel = mongoose.model('keywordFoo', FooSchema)
+    var FooModel = db.model('keywordFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
     before(function () {
@@ -30,6 +29,7 @@ describe('Keywords', function () {
       assert.strictEqual(typeof FooSchema.paths.title, 'object')
       assert.strictEqual(typeof FooSchema.paths.keywords, 'object')
       assert.strictEqual(typeof FooSchema.methods.extractKeywords, 'function')
+      assert.strictEqual(typeof FooSchema.statics.extractKeywords, 'function')
       done()
     })
 
@@ -42,8 +42,9 @@ describe('Keywords', function () {
     })
 
     it('should manually extract keywords', function (done) {
-      var words = foo.extractKeywords('one two three')
-      assert.strictEqual(words.toString(), ['one', 'two', 'three'].toString())
+      var str = 'one two three'
+      assert.strictEqual(foo.extractKeywords(str).toString(), ['one', 'two', 'three'].toString())
+      assert.strictEqual(FooModel.extractKeywords(str).toString(), ['one', 'two', 'three'].toString())
       done()
     })
   })
@@ -58,7 +59,7 @@ describe('Keywords', function () {
     , override: true
     , naturalize: true
     })
-    var BarModel = mongoose.model('keywordBar', FooSchema)
+    var BarModel = db.model('keywordBar', FooSchema)
       , bar = new BarModel({ 
           moo: 'fooed bars test one'
         , cow: 'test õne twø lorem'
@@ -89,8 +90,8 @@ describe('Keywords', function () {
     })
 
     it('should manually extract keywords', function (done) {
-      var words = bar.extractKeywords('a two three')
-      assert.strictEqual(words.toString(), ['two', 'three'].toString())
+      var str = 'a two three'
+      assert.strictEqual(bar.extractKeywords(str).toString(), ['two', 'three'].toString())
       done()
     })
 

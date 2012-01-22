@@ -13,7 +13,7 @@ describe('ACL', function () {
   describe('#default()', function () {
     var FooSchema = new Schema({})
     FooSchema.plugin(acl)
-    var FooModel = mongoose.model('foo', FooSchema)
+    var FooModel = db.model('foo', FooSchema)
     var foo = new FooModel()
 
     foo.addAccess('blog')

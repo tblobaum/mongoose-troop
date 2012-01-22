@@ -6,7 +6,6 @@ var util = require('util')
   , slugify = require('../lib/slugify')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
@@ -16,7 +15,7 @@ describe('Slugify', function () {
   
   describe('#default()', function () {
     FooSchema.plugin(slugify)
-    var FooModel = mongoose.model('slugFoo', FooSchema)
+    var FooModel = db.model('slugFoo', FooSchema)
       , foo = new FooModel({ title: 'i like cookies!'})
     
     before(function () {
@@ -29,6 +28,7 @@ describe('Slugify', function () {
       assert.strictEqual(typeof FooSchema.paths.title, 'object')
       assert.strictEqual(typeof FooSchema.paths.slug, 'object')
       assert.strictEqual(typeof FooSchema.methods.slugify, 'function')
+      assert.strictEqual(typeof FooSchema.statics.slugify, 'function')
       done()
     })
 
@@ -52,8 +52,9 @@ describe('Slugify', function () {
     })
 
     it('should manually slugify', function (done) {
-      var slug = foo.slugify('one two three')
-      assert.strictEqual(slug, 'one-two-three')
+      var str = 'one two three'
+      assert.strictEqual(foo.slugify(str), 'one-two-three')
+      assert.strictEqual(FooModel.slugify(str), 'one-two-three')
       done()
     })
   })
@@ -67,7 +68,7 @@ describe('Slugify', function () {
     , spaceChar: '_'
     , override: true
     })
-    var BarModel = mongoose.model('slugBar', FooSchema)
+    var BarModel = db.model('slugBar', FooSchema)
       , bar = new BarModel({ 
           hey: 'lorem ipsum! twø a foo'
         })
@@ -105,8 +106,9 @@ describe('Slugify', function () {
     })
 
     it('should manually slugify', function (done) {
-      var slug = bar.slugify('one two three')
-      assert.strictEqual(slug, 'one_two_three')
+      var str = 'one two three'
+      assert.strictEqual(bar.slugify(str), 'one_two_three')
+      assert.strictEqual(BarModel.slugify(str), 'one_two_three')
       done()
     })
   })
