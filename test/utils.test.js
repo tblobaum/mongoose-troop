@@ -6,7 +6,6 @@ var util = require('util')
   , trooputils = require('../lib/utils')
   , common = require('./support/common')
   , db = common.db
-  , cleanup = common.cleanup
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
@@ -14,26 +13,20 @@ var util = require('util')
 describe('Utils', function () {
   describe('#default()', function () {
     var BarSchema = new Schema({
-      other: {
-        type:mongoose.Schema.ObjectId
-      , ref:'other'
-      }
-    , arr: [{
-        type:mongoose.Schema.ObjectId
-      , ref:'arr'
-      }]
+      other: { type: mongoose.Schema.ObjectId, ref: 'utilsOther' }
+    , arr: [{ type: mongoose.Schema.ObjectId, ref: 'utilsArr' }]
     })
     var OtherSchema = new Schema()
       , ArrSchema = new Schema()
     
     trooputils(BarSchema)
     
-    var BarModel = mongoose.model('bar', BarSchema)
-      , OtherModel = mongoose.model('other', OtherSchema)
-      , ArrModel = mongoose.model('arr', ArrSchema)
+    var BarModel = db.model('utilsBar', BarSchema)
+      , OtherModel = db.model('utilsOther', OtherSchema)
+      , ArrModel = db.model('utilsArr', ArrSchema)
       , othermodel = new OtherModel()
       , arrmodel = new ArrModel()
-      , bar = new BarModel({arr: [arrmodel], other: othermodel })
+      , bar = new BarModel({ arr: [arrmodel], other: othermodel })
 
     it('should have custom methods', function (done) {
       assert.ok(bar.merge)
@@ -48,22 +41,25 @@ describe('Utils', function () {
         done()
       })
     })
-      
+    
     it('should still work with populate', function (done) {
       arrmodel.save(function (err) {
         assert.strictEqual(err, null)
         othermodel.save(function (err) {
-            assert.strictEqual(err, null)
+          assert.strictEqual(err, null)
           bar.save(function (err) {
             assert.strictEqual(err, null)
             BarModel
               .find()
-              .populate('arr')
-              .populate('other')
+              .populate('utilsArr')
+              .populate('utilsOther')
               .run(function (err, docs) {
                 assert.strictEqual(err, null)
                 docs[docs.length-1].getdbrefs(function (refs) {
-                  assert.notStrictEqual(Object.keys(refs), ["other", "arr"])
+                  assert.notStrictEqual(Object.keys(refs), [
+                    'utilsOther'
+                  , 'utilsArr'
+                  ])
                   done()
                 })
               })

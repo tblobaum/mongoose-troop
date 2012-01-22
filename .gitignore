@@ -21,6 +21,7 @@ thumbs.db
 .log
 .pid
 .sock
+.monitor
 
 # Dreamweaver added files
 _notes
