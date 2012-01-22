@@ -13,14 +13,8 @@ var util = require('util')
 describe('Utils', function () {
   describe('#default()', function () {
     var BarSchema = new Schema({
-      other: {
-        type:mongoose.Schema.ObjectId
-      , ref:'other'
-      }
-    , arr: [{
-        type:mongoose.Schema.ObjectId
-      , ref:'arr'
-      }]
+      other: { type: mongoose.Schema.ObjectId, ref: 'utilsOther' }
+    , arr: [{ type: mongoose.Schema.ObjectId, ref: 'utilsArr' }]
     })
     var OtherSchema = new Schema()
       , ArrSchema = new Schema()
