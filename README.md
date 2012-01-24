@@ -13,7 +13,9 @@ A collection of handy plugins for mongoose
 * <a href="#Troop.pagination"> pagination </a> (query pagination)
 * <a href="#Troop.rest"> rest </a> (http or rpc controller)
 * <a href="#Troop.obfuscate"> obfuscate </a> (objectID encryption / decryption)
-* <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
+* <a href="#Troop.merge"> merge </a> (merge a document into another)
+* <a href="#Troop.removeDefaults"> removeDefaults </a> (remove default values from a document)
+* <a href="#Troop.getdbrefs"> getdbrefs </a> (find all document DBRefs)
 
 ***
 
@@ -167,6 +169,10 @@ instance.save(function(err, doc) {
 })
 ````
 
+## Note
+
+This plugin does not currently support nested paths
+
 
 ***
 
@@ -219,6 +225,10 @@ fooModel.find({ keywords: { $in: fooModel.extractKeywords(val) }}, function(docs
   // ...
 })
 ````
+
+## Note
+
+This plugin does not currently support nested paths
 
 
 ***
@@ -587,9 +597,7 @@ those manually
 
 ***
 
-# <a name="Troop.utils" href="#Troop.utils">utils</a>
-
-## merge
+# <a name="Troop.merge" href="#Troop.merge">merge</a>
 
 Merge JSON into your object more easily.
 
@@ -597,33 +605,44 @@ Merge JSON into your object more easily.
 instance.merge({title:'A new title', description:'A new description'}).save()
 ````
 
-### Options
+## Note
 
-* `debug` verbose logging of current actions (optional, default `false`)
+This plugin does not currently support nested paths
 
-## getdbrefs
+
+***
+
+# <a name="Troop.getdbrefs" href="#Troop.getdbrefs">getdbrefs</a>
 
 Get the dbrefs from a schema
 
 ```javascript
 instance.getdbrefs(function (refs) {
-  console.log(refs)
-  // ..
-  
+  // ...
 })
 
 ```
 
-## removeDefaults
+## Note
+
+This plugin does not currently support nested paths
+
+
+***
+
+# <a name="Troop.removeDefaults" href="#Troop.removeDefaults">removeDefaults</a>
 
 Remove all of the default values from your model instance.
 
 `instance.removeDefaults().save()`
 
-### Options
 
-* `debug` verbose logging of current actions (optional, default `false`)
+## Note
 
+This plugin does not currently support nested paths
+
+
+***
 
 ## Contributing
 

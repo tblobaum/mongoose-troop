@@ -15,28 +15,29 @@ describe('Obfuscate', function () {
     var FooSchema = new Schema()
       , UserSchema = new Schema()
       , SessionSchema = new Schema()
-      , BarSchema = new Schema({
-          foo: { type: ObjectId, ref: FooSchema }
-        , foos: [{ type: ObjectId, ref: FooSchema }]
-        , nested: {
-            foo: { type: ObjectId, ref: FooSchema }
-          , foos: [{ type: ObjectId, ref: FooSchema }]
-          , another: [FooSchema]
+    
+    var BarSchema = new Schema({
+      foo: { type: ObjectId, ref: FooSchema }
+    , foos: [{ type: ObjectId, ref: FooSchema }]
+    , nested: {
+        foo: { type: ObjectId, ref: FooSchema }
+      , foos: [{ type: ObjectId, ref: FooSchema }]
+      , another: [FooSchema]
+    }
+    , another: [FooSchema]
+    , simple: [String]
+    , user: { 
+        id: { type: Schema.ObjectId, ref: 'obfuscateUser' }
+      , screen_name: { type: String }
+      , avatar: { 
+          large: { type: String }
+        , small: { type: String }
         }
-        , another: [FooSchema]
-        , simple: [String]
-        , user: { 
-            id: { type: Schema.ObjectId, ref: 'obfuscateUser' }
-          , screen_name: { type: String }
-          , avatar: { 
-              large: { type: String }
-            , small: { type: String }
-            }
-          , deeper: {
-              sid: { type: Schema.ObjectId, ref: 'obfuscateSession' }
-            }
-          }
-        })
+      , deeper: {
+          sid: { type: Schema.ObjectId, ref: 'obfuscateSession' }
+        }
+      }
+    })
     
     // FooSchema.plugin(obfuscate)
     BarSchema.plugin(obfuscate)
@@ -50,23 +51,24 @@ describe('Obfuscate', function () {
       , foo3 = new FooModel()
       , session = new SessionModel()
       , user = new UserModel()
-      , bar = new BarModel({
-          foo: foo
-        , foos: [foo2, foo3]
-        , another: [foo]
-        , nested: {
-            foo: foo
-          , foos: [foo2, foo3]
-          , another: [foo]
-        }
-        , simple: ['hello']
-        , user: {
-            id: user._id
-          , screen_name: 'bob'
-          , avatar: { large: 'massive', small: 'tiny' }
-          , deeper: { sid: session._id }
-          }
-        })
+    
+    var bar = new BarModel({
+      foo: foo
+    , foos: [foo2, foo3]
+    , another: [foo]
+    , nested: {
+        foo: foo
+      , foos: [foo2, foo3]
+      , another: [foo]
+    }
+    , simple: ['hello']
+    , user: {
+        id: user._id
+      , screen_name: 'bob'
+      , avatar: { large: 'massive', small: 'tiny' }
+      , deeper: { sid: session._id }
+      }
+    })
     
     before(function () {
       FooModel.remove(function (err) {

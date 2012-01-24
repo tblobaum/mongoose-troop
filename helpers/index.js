@@ -1,8 +1,11 @@
 
-/*!
- * Copyright(c) Beau Sorensen
- * MIT Licensed
- */
+//  (c) 2012 Beau Sorensen
+//  MIT Licensed
+//  For all details and documentation:
+//  https://github.com/tblobaum/mongoose-troop
+
+// Helpers
+// -------
 
 // Setter to ensure sparse fields are undefined if empty
 function emptyToSparse (str) {
@@ -22,6 +25,7 @@ function nestedPath (obj, key, val) {
     key = keys.shift()
     return nestedPath(obj[key], keys.join('.'), val)
   }
+  // if (arguments.length > 2) obj[key] = val
   val && (obj[key] = val)
   return obj[key]
 }
