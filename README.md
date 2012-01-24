@@ -620,7 +620,6 @@ Get the dbrefs from a schema
 instance.getdbrefs(function (refs) {
   // ...
 })
-
 ```
 
 ## Note

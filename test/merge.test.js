@@ -21,6 +21,11 @@ describe('Merge', function () {
     , num2: Number
     , bool2: Boolean
     , ref: { type: ObjectId, ref: BarSchema }
+    , und: String
+    , nested: {
+        one: String
+      , two: Boolean
+      }
     })
     FooSchema.plugin(merge)
     
@@ -39,6 +44,11 @@ describe('Merge', function () {
       str2: 'there'
     , num2: 200
     , bool2: false
+    , und: undefined
+    , nested: {
+        one: 'one'
+      , two: true
+      }
     })
 
     var hello = new FooModel({
@@ -51,18 +61,21 @@ describe('Merge', function () {
     })
     
     it('should merge the documents', function (done) {
-      foo.merge(bar)
-      assert.strictEqual(foo.str2, 'there')
-      assert.strictEqual(Number(foo.num2), 200)
-      assert.strictEqual(foo.bool2, false)
-      done()
-    })
-    
-    it('should merge the documents', function (done) {
       bar.merge(foo)
       assert.strictEqual(bar.str, 'hello')
       assert.strictEqual(Number(bar.num), 10)
       assert.strictEqual(bar.bool, true)
+      done()
+    })
+    
+    it('should merge the documents with nested paths', function (done) {
+      foo.merge(bar)
+      assert.strictEqual(foo.str2, 'there')
+      assert.strictEqual(Number(foo.num2), 200)
+      assert.strictEqual(foo.bool2, false)
+      assert.strictEqual(foo.und, undefined)
+      assert.strictEqual(foo.nested.one, 'one')
+      assert.strictEqual(foo.nested.two, true)
       done()
     })
 
