@@ -1,12 +1,17 @@
 
-/*!
- * Copyright(c) Beau Sorensen
- * MIT Licensed
- */
+//  (c) 2012 Beau Sorensen
+//  MIT Licensed
+//  For all details and documentation:
+//  https://github.com/tblobaum/mongoose-troop
+
+// Helpers
+// -------
 
 // Setter to ensure sparse fields are undefined if empty
 function emptyToSparse (str) {
-  return (!str || !str.length) ? undefined : str
+  return (!str || !str.length) 
+    ? undefined 
+    : str
 }
 
 // Validator to ensure that a property exists
@@ -15,15 +20,19 @@ function validatePresenceOf (value) {
 }
 
 // Create an object out of a nested path
-function nestedPath (obj, key, val) {
-  if (!obj) return obj
-  var keys = key.split('.')
-  if (keys.length > 1) {
-    key = keys.shift()
-    return nestedPath(obj[key], keys.join('.'), val)
+function nestedPath (obj, path, val) {
+  if (typeof obj !== 'object') {
+    return obj
   }
-  val && (obj[key] = val)
-  return obj[key]
+  var keys = path.split('.')
+  if (keys.length > 1) {
+    path = keys.shift()
+    return nestedPath(obj[path], keys.join('.'), val)
+  }
+  if (val !== undefined) {
+    obj[path] = val
+  }
+  return obj[path]
 }
 
 // Convert a document or an array of documents to objects
@@ -64,7 +73,9 @@ function dropCollections (db, each, fn) {
   cols.forEach(function (name, k) {
     console.log('name: ', name, k)
     conn.collections[name].drop(function (err) {
-      if (err == 'ns not found') err = null
+      if (err == 'ns not found') {
+        err = null
+      }
       each && each(err, name)
     })
   })

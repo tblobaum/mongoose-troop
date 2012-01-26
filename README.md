@@ -4,68 +4,73 @@
 A collection of handy plugins for mongoose
 
 ## Contents
-* <a href="#Troop.acl"> acl </a>
-* <a href="#Troop.basicAuth"> basicAuth </a> (simple authentication and registration)
-* <a href="#Troop.timestamp"> timestamp </a> (automatic created and modified timestamps)
-* <a href="#Troop.slugify"> slugify </a> (url-friendly copies of string properties)
-* <a href="#Troop.keywords"> keywords </a> (search-friendly array of stemmed words from string properties)
-* <a href="#Troop.pubsub"> pubsub </a> (message passing)
-* <a href="#Troop.pagination"> pagination </a> (query pagination)
-* <a href="#Troop.rest"> rest </a> (http or rpc controller)
-* <a href="#Troop.obfuscate"> obfuscate </a> (objectID encryption / decryption)
-* <a href="#Troop.utils"> utils </a> (merge, removeDefaults, getdbrefs)
+
+* [acl](#Troop.acl) (simple access control list)
+* [basicAuth](#Troop.basicAuth) (simple authentication and registration)
+* [timestamp](#Troop.timestamp) (automatic created and modified timestamps)
+* [slugify](#Troop.slugify) (url-friendly copies of string properties)
+* [keywords](#Troop.keywords) (search-friendly array of stemmed words from string properties)
+* [pubsub](#Troop.pubsub) (message passing)
+* [pagination](#Troop.pagination) (query pagination)
+* [rest](#Troop.rest) (http or rpc controller)
+* [obfuscate](#Troop.obfuscate) (objectID encryption / decryption)
+* [merge](#Troop.merge) (merge a document into another)
+* [removeDefaults](#Troop.removeDefaults) (remove default values from a document)
+* [getdbrefs](#Troop.getdbrefs) (find all document DBRefs)
+
+The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/)
 
 ***
 
-# <a name="Troop.acl" href="#Troop.acl">acl</a>
+## <span id="#Troop.acl">acl</a>
 Simple access control list
 
-## Methods
+### Methods
 
-### instance.addAccess(key)
+#### instance.addAccess(key)
 
 Add `key` access to a Model instance
 
-### instance.removeAccess(key)
+#### instance.removeAccess(key)
 
 Remove `key` access to a Model instance
 
-### instance.access(key [, callback])
+#### instance.access(key [, callback])
 
 Return or callback a boolean
 
 
 ***
 
-# <a name="Troop.basicAuth" href="#Troop.basicAuth">basicAuth</a>
+## <span id="#Troop.basicAuth">basicAuth</a>
 
 Simple authentication plugin
 
-## Options
+### Options
 
 * `loginPath` schema path for username/login (optional, default `username`)
 * `hashPath` schema path to hashed password (optional, default `hash`)
 * `workFactor` bcrypt work factor (optional, default `10`)
 
-## Methods
+### Methods
 
-### instance.authenticate(password, callback)
+#### instance.authenticate(password, callback)
 
 Authenticate a mongoose document
 
-### instance.setPassword(password, callback)
+#### instance.setPassword(password, callback)
 
 Set the password for a mongoose document
 
-### model.authenticate(username, password, callback)
+#### model.authenticate(username, password, callback)
 
 Authenticate a user on the model level
 
-### model.register(attributes, callback)
+#### model.register(attributes, callback)
 
 Create a new user with given attributes
 
-## Example
+### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -102,17 +107,17 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 
 ***
 
-# <a name="Troop.timestamp" href="#Troop.timestamp">timestamp</a>
+## <span id="#Troop.timestamp">timestamp</a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
-## Options
+### Options
 
 * `createdPath` schema path for created timestamp (optional, default `created`)
 * `modifiedPath` schema path for modified timestamp (optional, default `modified`)
 * `useVirtual` use a virtual path for created timestamp based on ObjectId (optional, default `true`)
 
-## Example
+### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -122,7 +127,7 @@ var mongoose = require('mongoose')
 FooSchema.plugin(troop.timestamp)
 ````
 
-## Note
+### Note
 
 Using the virtual `created` timestamp you will lose the ability to run queries against it, 
 as well as a loss in precision, as it will return a timestamp in seconds.
@@ -130,13 +135,13 @@ as well as a loss in precision, as it will return a timestamp in seconds.
 
 ***
 
-# <a name="Troop.slugify" href="#Troop.slugify">slugify</a>
+## <span id="#Troop.slugify">slugify</a>
 
 Turn a string based field into a url friendly slug
 
 Converts `this is a title` to `this-is-a-title`
 
-## Options
+### Options
 
 * `target` schema path for slug destination (optional, default `slug`)
 * `source` schema path for slug content (optional, default `title`)
@@ -145,13 +150,13 @@ Converts `this is a title` to `this-is-a-title`
 * `invalidChar` invalid character replacement (optional, default ``)
 * `override` override slug field on source path change (optional, default `false`)
 
-## Methods
+### Methods
 
-### instance.slugify(string)
+#### instance.slugify(string)
 
-### model.slugify(string)
+#### model.slugify(string)
 
-## Example
+### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -167,17 +172,21 @@ instance.save(function(err, doc) {
 })
 ````
 
+### Note
+
+This plugin does not currently support nested paths
+
 
 ***
 
-# <a name="Troop.keywords" href="#Troop.keywords">keywords</a>
+## <span id="#Troop.keywords">keywords</a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
 
 Turns `fooed bars` into `['foo', 'bar']`
 
-## Options
+### Options
 
 * `target` schema path for keyword destination (optional, default `keywords`)
 * `source` schema path for extracting keywords, can be an array to specify multiple paths
@@ -185,15 +194,15 @@ Turns `fooed bars` into `['foo', 'bar']`
 * `invalidChar` replacement char for invalid chars (optional, default ``)
 * `naturalize` specifies whether to use a porter stemmer for keywords (optional, default `false`)
 
-## Methods
+### Methods
 
-### instance.extractKeywords(str)
+#### instance.extractKeywords(str)
 
-### model.extractKeywords(str)
+#### model.extractKeywords(str)
 
 Manually calculate a keyword array with a given string
 
-## Example
+### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -209,27 +218,31 @@ FooSchema.plugin(troop.keywords, {
 })
 
 var fooModel = mongoose.model('foo', FooSchema)
-  , instance = new FooSchema({text: 'i am the batman'})
+  , instance = new FooSchema({ text: 'i am the batman' })
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
 
-var val = 'batman'
-
-fooModel.find({ keywords: { $in: fooModel.extractKeywords(val) }}, function(docs) {
+fooModel.find({ 
+  keywords: { $in: fooModel.extractKeywords('batman') }
+}, function(docs) {
   // ...
 })
 ````
 
+### Note
+
+This plugin does not currently support nested paths
+
 
 ***
 
-# <a name="Troop.publish" href="#Troop.publish">publish</a>
+## <span id="#Troop.publish">publish</a>
 
 Plugin to publish/subscribe from a model or instance level, also enabling a model 
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
 and instances can be published/subscribed to.
 
-## Options
+### Options
 
 * `auto` attach middleware based on the `hook` for `init`, `save`, and `remove` methods (optional, default `false`)
 * `hook` middleware method to attach auto middleware to (optional, default `post`)
@@ -239,27 +252,27 @@ and instances can be published/subscribed to.
 * `publish` redis instance to be used for publishing
 * `subscribe` redis instance to be used for subscribing
 
-## Methods
+### Methods
 
-### instance.publish(doc, options, callback)
+#### instance.publish(doc, options, callback)
 
-### instance.subscribe(callback)
+#### instance.subscribe(callback)
 
-### instance.unsubscribe(callback)
+#### instance.unsubscribe(callback)
 
-### instance.getChannel()
+#### instance.getChannel()
 
-### instance.on(event, callback)
+#### instance.on(event, callback)
 
-### model.subscribe(callback)
+#### model.subscribe(callback)
 
-### model.unsubscribe(callback)
+#### model.unsubscribe(callback)
 
-### model.getChannel()
+#### model.getChannel()
 
-### model.on(event, callback)
+#### model.on(event, callback)
 
-## Example
+### Example
 
 ```javascript
 var redis = require('redis')
@@ -321,26 +334,26 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 
 ***
 
-# <a name="Troop.pagination" href="#Troop.pagination">pagination</a>
+## <span id="#Troop.pagination">pagination</a>
 
 Simple query pagination routines.
 
-## Options
+### Options
 
 * `defaultQuery` Query to use if not specified (optional, default `{}`)
 * `defaultLimit` Results per page to use if not specified (optional, default `10`)
 * `defaultFields` Fields to use if not specified (optional, default `[]`)
 * `remember` Remember the last options used for `query`, `limit`, and `fields` (optional, default `false`)
 
-## Methods
+### Methods
 
-### model.paginate(options, callback)
+#### model.paginate(options, callback)
 
-### model.firstPage(options, callback)
+#### model.firstPage(options, callback)
 
-### model.lastPage(options, callback)
+#### model.lastPage(options, callback)
 
-## Example
+### Example
 
 Assume that we have a collection with 55 records in it for the following example,
 where the `count` field is incremented by 1 for each record, starting at 1.
@@ -404,7 +417,7 @@ FooModel.paginate({
 })
 ````
 
-## Note
+### Note
 
 If using the `remember` option, the plugin will cache all of the options you give it 
 each time you pass them in (except for the page), this can be handy if the params are 
@@ -417,9 +430,9 @@ a full set specified by the `limit` when this is the case.
 
 ***
 
-# <a name="Troop.rest" href="#Troop.rest">rest</a>
+## <span id="#Troop.rest">rest</a>
 
-## Options
+### Options
 
 * `pagination` options to send to the pagination plugin above (optional, see plugin defaults above)
 
@@ -428,13 +441,13 @@ Create a REST-ful controller for your models for use with flatiron/director, exp
 
 ***
 
-# <a name="Troop.obfuscate" href="#Troop.obfuscate">obfuscate</a>
+## <span id="#Troop.obfuscate">obfuscate</a>
 
 ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
 any ObjectID that is found to prevent leaking any server information contained in the ID, will 
 work with embedded documents as well as DBRefs.
 
-## Options
+### Options
 
 * `encryptPath` Getter path for returning encrypted document (optional, default `obfuscate`)
 * `decryptPath` Setter path for decrypting an object and assigning it to the document (optional, default `deobfuscate`)
@@ -443,19 +456,19 @@ work with embedded documents as well as DBRefs.
 * `from` Encoding of the field to be encrypted (optional, default `utf8`)
 * `to` Encoding of the encrypted field (optional, default `hex`)
 
-## Methods
+### Methods
 
-###model.encrypt(string)
+####model.encrypt(string)
 
-###model.decrypt(string)
+####model.decrypt(string)
 
-###model.encode(object, boolean)
+####model.encode(object, boolean)
 
-###instance.encrypt(string)
+####instance.encrypt(string)
 
-###instance.decrypt(string)
+####instance.decrypt(string)
 
-## Example
+### Example
 
 ```javascript
 var mongoose = require('mongoose')
@@ -579,7 +592,7 @@ Which should give us back the original object
 }
 ````
 
-## Note
+### Note
 
 This plugin will not work with `Mixed` type schema paths, you will have to obfuscate
 those manually
@@ -587,9 +600,7 @@ those manually
 
 ***
 
-# <a name="Troop.utils" href="#Troop.utils">utils</a>
-
-## merge
+## <span id="#Troop.merge">merge</a>
 
 Merge JSON into your object more easily.
 
@@ -597,33 +608,39 @@ Merge JSON into your object more easily.
 instance.merge({title:'A new title', description:'A new description'}).save()
 ````
 
-### Options
 
-* `debug` verbose logging of current actions (optional, default `false`)
+***
 
-## getdbrefs
+## <span id="#Troop.getdbrefs">getdbrefs</a>
 
 Get the dbrefs from a schema
 
 ```javascript
 instance.getdbrefs(function (refs) {
-  console.log(refs)
-  // ..
-  
+  // ...
 })
-
 ```
 
-## removeDefaults
+### Note
+
+This plugin does not currently support nested paths
+
+
+***
+
+## <span id="#Troop.removeDefaults">removeDefaults</a>
 
 Remove all of the default values from your model instance.
 
 `instance.removeDefaults().save()`
 
-### Options
 
-* `debug` verbose logging of current actions (optional, default `false`)
+### Note
 
+This plugin does not currently support nested paths
+
+
+***
 
 ## Contributing
 

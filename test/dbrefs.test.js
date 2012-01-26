@@ -3,63 +3,79 @@
 var util = require('util')
   , assert = require('assert')
   , mongoose = require('mongoose')
-  , trooputils = require('../lib/utils')
+  , getdbrefs = require('../lib/getdbrefs')
   , common = require('./support/common')
   , db = common.db
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
 // Run tests
-describe('Utils', function () {
+describe('GetDBRefs', function () {
   describe('#default()', function () {
     var BarSchema = new Schema({
       other: { type: mongoose.Schema.ObjectId, ref: 'utilsOther' }
     , arr: [{ type: mongoose.Schema.ObjectId, ref: 'utilsArr' }]
     })
-    var OtherSchema = new Schema()
-      , ArrSchema = new Schema()
+
+    var OtherSchema = new Schema({ str: String })
+      , ArrSchema = new Schema({ bool: Boolean })
     
-    trooputils(BarSchema)
+    BarSchema.plugin(getdbrefs)
     
     var BarModel = db.model('utilsBar', BarSchema)
       , OtherModel = db.model('utilsOther', OtherSchema)
       , ArrModel = db.model('utilsArr', ArrSchema)
-      , othermodel = new OtherModel()
-      , arrmodel = new ArrModel()
-      , bar = new BarModel({ arr: [arrmodel], other: othermodel })
+    
+    before(function () {
+      BarModel.remove(function (err) {
+        assert.strictEqual(err, null)
+      })
+      OtherModel.remove(function (err) {
+        assert.strictEqual(err, null)
+      })
+      ArrModel.remove(function (err) {
+        assert.strictEqual(err, null)
+      })
+    })
+
+    var other = new OtherModel({ str: 'other' })
+      , arr = new ArrModel({ bool: true })
+      , bar = new BarModel({ arr: [arr], other: other })
 
     it('should have custom methods', function (done) {
-      assert.ok(bar.merge)
-      assert.ok(bar.removeDefaults)
-      assert.ok(bar.getdbrefs)
+      assert.strictEqual(typeof BarSchema.methods.getdbrefs, 'function')
       done()
     })
     
     it('should return an object with the dbrefs', function (done) {
       bar.getdbrefs(function (refs) {
-        assert.notStrictEqual(Object.keys(refs), Array)
+        assert.strictEqual(typeof refs, 'object')
+        assert.strictEqual(refs.utilsOther.toString(), other._id.toString())
+        assert.strictEqual(refs.utilsArr[0].toString(), arr._id.toString())
         done()
       })
     })
     
     it('should still work with populate', function (done) {
-      arrmodel.save(function (err) {
+      arr.save(function (err) {
         assert.strictEqual(err, null)
-        othermodel.save(function (err) {
+
+        other.save(function (err) {
           assert.strictEqual(err, null)
+
           bar.save(function (err) {
             assert.strictEqual(err, null)
+
             BarModel
               .find()
               .populate('utilsArr')
               .populate('utilsOther')
               .run(function (err, docs) {
                 assert.strictEqual(err, null)
-                docs[docs.length-1].getdbrefs(function (refs) {
-                  assert.notStrictEqual(Object.keys(refs), [
-                    'utilsOther'
-                  , 'utilsArr'
-                  ])
+                assert.strictEqual(docs.length, 1)
+                docs[0].getdbrefs(function (refs) {
+                  assert.strictEqual(refs.utilsOther.toString(), other._id.toString())
+                  assert.strictEqual(refs.utilsArr[0].toString(), arr._id.toString())
                   done()
                 })
               })
