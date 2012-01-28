@@ -1,0 +1,71 @@
+<!DOCTYPE html>  <html> <head>   <title>rest.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="index.html">                 index.js               </a>                                           <a class="source" href="acl.html">                 acl.js               </a>                                           <a class="source" href="basicAuth.html">                 basicAuth.js               </a>                                           <a class="source" href="getdbrefs.html">                 getdbrefs.js               </a>                                           <a class="source" href="merge.html">                 merge.js               </a>                                           <a class="source" href="obfuscate.html">                 obfuscate.js               </a>                                           <a class="source" href="pagination.html">                 pagination.js               </a>                                           <a class="source" href="pubsub.html">                 pubsub.js               </a>                                           <a class="source" href="removeDefaults.html">                 removeDefaults.js               </a>                                           <a class="source" href="rest.html">                 rest.js               </a>                                           <a class="source" href="slugify.html">                 slugify.js               </a>                                           <a class="source" href="timestamp.html">                 timestamp.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               rest.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>(c) 2012 Tom Blobaum
+ MIT Licensed
+ For all details and documentation:
+ https://github.com/tblobaum/mongoose-troop</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>REST</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">dataToObjects</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../helpers&#39;</span><span class="p">).</span><span class="nx">dataToObjects</span>
+
+<span class="kd">function</span> <span class="nx">rest</span> <span class="p">(</span><span class="nx">schema</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{}</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Options</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pagination</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">pagination</span> <span class="o">||</span> <span class="p">{}</span>
+
+  <span class="nx">schema</span><span class="p">.</span><span class="kr">static</span><span class="p">({</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="nx">get</span>
+  <span class="p">,</span> <span class="nx">post</span><span class="o">:</span> <span class="nx">update</span>
+  <span class="p">,</span> <span class="nx">put</span><span class="o">:</span> <span class="nx">update</span>
+  <span class="p">,</span> <span class="nx">del</span><span class="o">:</span> <span class="nx">del</span>
+  <span class="p">,</span> <span class="nx">search</span><span class="o">:</span> <span class="nx">search</span>
+  <span class="p">,</span> <span class="nx">bulk</span><span class="o">:</span> <span class="nx">search</span>
+  <span class="p">})</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">schema</span><span class="p">.</span><span class="nx">statics</span><span class="p">.</span><span class="nx">paginate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">schema</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./pagination&#39;</span><span class="p">),</span> <span class="nx">pagination</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">get</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">fn</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">dataToObjects</span><span class="p">(</span><span class="nx">doc</span><span class="p">))</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">update</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nx">data</span><span class="p">.</span><span class="nx">_id</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">_id</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">_id</span><span class="p">)</span>
+    <span class="k">delete</span> <span class="nx">data</span><span class="p">.</span><span class="nx">_id</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">upsert</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">||</span> <span class="o">!</span><span class="nx">count</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="nx">fn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">del</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">||</span> <span class="o">!</span><span class="nx">doc</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="nx">doc</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+        <span class="nx">fn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">search</span> <span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">query</span> <span class="o">||</span> <span class="p">{}</span>
+      <span class="p">,</span> <span class="nx">limit</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">limit</span>
+      <span class="p">,</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">page</span>
+
+    <span class="k">delete</span> <span class="nx">query</span><span class="p">.</span><span class="nx">limit</span>
+    <span class="k">delete</span> <span class="nx">query</span><span class="p">.</span><span class="nx">page</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">paginate</span><span class="p">({</span>
+      <span class="nx">query</span><span class="o">:</span> <span class="nx">query</span>
+    <span class="p">,</span> <span class="nx">limit</span><span class="o">:</span> <span class="nx">limit</span>
+    <span class="p">,</span> <span class="nx">page</span><span class="o">:</span> <span class="nx">page</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">docs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">fn</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">dataToObjects</span><span class="p">(</span><span class="nx">docs</span><span class="p">))</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">rest</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
