@@ -8,7 +8,7 @@
   }]
 , "name": "mongoose-troop"
 , "description": "plugins for mongoose"
-, "version": "0.0.5"
+, "version": "0.0.6"
 , "homepage": "http://analyticsmachine.com"
 , "repository": {
     "type": "git"
