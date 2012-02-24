@@ -1,5 +1,5 @@
 
-# Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop) 
+# Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop)
 
 A collection of handy plugins for mongoose
 
@@ -22,7 +22,7 @@ The annotated source can be found [here](http://tblobaum.github.com/mongoose-tro
 
 ***
 
-## <span id="#Troop.acl">acl</a>
+## <a id="Troop.acl" href="#">acl</a>
 Simple access control list
 
 ### Methods
@@ -42,7 +42,7 @@ Return or callback a boolean
 
 ***
 
-## <span id="#Troop.basicAuth">basicAuth</a>
+## <a id="Troop.basicAuth" href="#">basicAuth</a>
 
 Simple authentication plugin
 
@@ -107,7 +107,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 
 ***
 
-## <span id="#Troop.timestamp">timestamp</a>
+## <a id="Troop.timestamp" href="#Troop.timestamp">timestamp</a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
@@ -129,13 +129,13 @@ FooSchema.plugin(troop.timestamp)
 
 ### Note
 
-Using the virtual `created` timestamp you will lose the ability to run queries against it, 
+Using the virtual `created` timestamp you will lose the ability to run queries against it,
 as well as a loss in precision, as it will return a timestamp in seconds.
 
 
 ***
 
-## <span id="#Troop.slugify">slugify</a>
+## <a id="Troop.slugify" href="#Troop.slugify>slugify</a>
 
 Turn a string based field into a url friendly slug
 
@@ -179,7 +179,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.keywords">keywords</a>
+## <a id="Troop.keywords" href="#Troop.keywords">keywords</a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
@@ -222,7 +222,7 @@ var fooModel = mongoose.model('foo', FooSchema)
 
 console.log(instance.keywords) // `['am', 'the', 'batman']`
 
-fooModel.find({ 
+fooModel.find({
   keywords: { $in: fooModel.extractKeywords('batman') }
 }, function(docs) {
   // ...
@@ -236,10 +236,10 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.publish">publish</a>
+## <a id="Troop.publish" href="#Troop.publish">publish</a>
 
-Plugin to publish/subscribe from a model or instance level, also enabling a model 
-to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
+Plugin to publish/subscribe from a model or instance level, also enabling a model
+to automatically publish changes on `init`, `save`, and `remove` methods.  Both models
 and instances can be published/subscribed to.
 
 ### Options
@@ -300,7 +300,7 @@ FooModel.findOne({name: 'bar'}, function(err, instance) {
 })
 ````
 
-Once you have a mongoose instance you can now publish it, by default, a model or 
+Once you have a mongoose instance you can now publish it, by default, a model or
 instance will publish to it's own channel
 
 ```javascript
@@ -334,7 +334,7 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 
 ***
 
-## <span id="#Troop.pagination">pagination</a>
+## <a id="Troop.pagination" href="#Troop.pagination">pagination</a>
 
 Simple query pagination routines.
 
@@ -408,7 +408,7 @@ FooModel.paginate({
 , limit: 25
 , fields: ['name']
 }, function(err, docs, count, pages, current) {
-  
+
   // docs.length = 5
   // count = 30
   // pages = 2
@@ -419,18 +419,18 @@ FooModel.paginate({
 
 ### Note
 
-If using the `remember` option, the plugin will cache all of the options you give it 
-each time you pass them in (except for the page), this can be handy if the params are 
+If using the `remember` option, the plugin will cache all of the options you give it
+each time you pass them in (except for the page), this can be handy if the params are
 going to be the same each time, if they are different you should not use this option.
 
-Also, when on the last page, the plugin will return the trailing number of documents, 
-in the example above the `lastPage` method returned 5 documents, it will never return 
+Also, when on the last page, the plugin will return the trailing number of documents,
+in the example above the `lastPage` method returned 5 documents, it will never return
 a full set specified by the `limit` when this is the case.
 
 
 ***
 
-## <span id="#Troop.rest">rest</a>
+## <a id="Troop.rest" href="#Troop.rest">rest</a>
 
 ### Options
 
@@ -441,10 +441,10 @@ Create a REST-ful controller for your models for use with flatiron/director, exp
 
 ***
 
-## <span id="#Troop.obfuscate">obfuscate</a>
+## <a id="Troop.obfuscate" href="#Troop.obfuscate">obfuscate</a>
 
-ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
-any ObjectID that is found to prevent leaking any server information contained in the ID, will 
+ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting
+any ObjectID that is found to prevent leaking any server information contained in the ID, will
 work with embedded documents as well as DBRefs.
 
 ### Options
@@ -489,7 +489,7 @@ var FooSchema = new mongoose.Schema({
   , embedded: [FooSchema]
 }
 , embedded: [FooSchema]
-, user: { 
+, user: {
     id: { type: Schema.ObjectId, ref: 'user' }
   , session: {
       sid: { type: Schema.ObjectId, ref: 'session' }
@@ -569,22 +569,23 @@ emptyFoo.deobfuscate = obfuscated
 Which should give us back the original object
 
 ```json
-{ 
+{
   _id: 4f1b234afe789543a3000008
 , dbref: 4f1b234afe789543a3000003
-, dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
-, embedded: { 
+, dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ]
+, embedded: {
     id: 4f1b234afe789543a3000007
-  , session: { 
-      sid: 4f1b234afe789543a3000006 
+  , session: {
+      sid: 4f1b234afe789543a3000006
     }
   }
 , embeddedArray:  [{
     _id: 4f1b234afe789543a3000003
   }]
-, nested: { 
+, nested: {
     dbref: 4f1b234afe789543a3000003
-  , dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
+  ,t:q
+  atdbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ]
   , embeddedArray: [{
       _id: 4f1b234afe789543a3000003
     }]
@@ -600,7 +601,7 @@ those manually
 
 ***
 
-## <span id="#Troop.merge">merge</a>
+## <a id="Troop.merge" href="#Troop.merge">merge</a>
 
 Merge JSON into your object more easily.
 
@@ -611,7 +612,7 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 
 ***
 
-## <span id="#Troop.getdbrefs">getdbrefs</a>
+## <a id="Troop.getdbrefs" href="#Troop.getdbrefs">getdbrefs</a>
 
 Get the dbrefs from a schema
 
@@ -628,7 +629,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.removeDefaults">removeDefaults</a>
+## <a id="Troop.removeDefaults" href="#Troop.removeDefaults">removeDefaults</a>
 
 Remove all of the default values from your model instance.
 
