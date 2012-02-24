@@ -22,7 +22,7 @@ The annotated source can be found [here](http://tblobaum.github.com/mongoose-tro
 
 ***
 
-## <a id="Troop.acl">acl</a>
+## <a id="Troop.acl" href="#">acl</a>
 Simple access control list
 
 ### Methods
@@ -42,7 +42,7 @@ Return or callback a boolean
 
 ***
 
-## <a id="Troop.basicAuth">basicAuth</a>
+## <a id="Troop.basicAuth" href="#">basicAuth</a>
 
 Simple authentication plugin
 
@@ -107,7 +107,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 
 ***
 
-## <a id="Troop.timestamp">timestamp</a>
+## <a id="Troop.timestamp" href="#Troop.timestamp">timestamp</a>
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
@@ -135,7 +135,7 @@ as well as a loss in precision, as it will return a timestamp in seconds.
 
 ***
 
-## <a id="Troop.slugify">slugify</a>
+## <a id="Troop.slugify" href="#Troop.slugify>slugify</a>
 
 Turn a string based field into a url friendly slug
 
@@ -179,7 +179,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <a id="Troop.keywords">keywords</a>
+## <a id="Troop.keywords" href="#Troop.keywords">keywords</a>
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
@@ -236,7 +236,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <a id="Troop.publish">publish</a>
+## <a id="Troop.publish" href="#Troop.publish">publish</a>
 
 Plugin to publish/subscribe from a model or instance level, also enabling a model
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models
@@ -334,7 +334,7 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 
 ***
 
-## <a id="Troop.pagination">pagination</a>
+## <a id="Troop.pagination" href="#Troop.pagination">pagination</a>
 
 Simple query pagination routines.
 
@@ -430,7 +430,7 @@ a full set specified by the `limit` when this is the case.
 
 ***
 
-## <a id="Troop.rest">rest</a>
+## <a id="Troop.rest" href="#Troop.rest">rest</a>
 
 ### Options
 
@@ -441,7 +441,7 @@ Create a REST-ful controller for your models for use with flatiron/director, exp
 
 ***
 
-## <a id="Troop.obfuscate">obfuscate</a>
+## <a id="Troop.obfuscate" href="#Troop.obfuscate">obfuscate</a>
 
 ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting
 any ObjectID that is found to prevent leaking any server information contained in the ID, will
@@ -601,7 +601,7 @@ those manually
 
 ***
 
-## <a id="Troop.merge">merge</a>
+## <a id="Troop.merge" href="#Troop.merge">merge</a>
 
 Merge JSON into your object more easily.
 
@@ -612,7 +612,7 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 
 ***
 
-## <a id="Troop.getdbrefs">getdbrefs</a>
+## <a id="Troop.getdbrefs" href="#Troop.getdbrefs">getdbrefs</a>
 
 Get the dbrefs from a schema
 
@@ -629,7 +629,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <a id="Troop.removeDefaults">removeDefaults</a>
+## <a id="Troop.removeDefaults" href="#Troop.removeDefaults">removeDefaults</a>
 
 Remove all of the default values from your model instance.
 
