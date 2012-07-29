@@ -406,7 +406,7 @@ FooModel.paginate({
   page: 2
 , query: { count: { $gt: 25 } }
 , limit: 25
-, fields: ['name']
+, fields: 'field1, field2'
 }, function(err, docs, count, pages, current) {
   
   // docs.length = 5
