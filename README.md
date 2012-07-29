@@ -22,7 +22,7 @@ The annotated source can be found [here](http://tblobaum.github.com/mongoose-tro
 
 ***
 
-## <span id="#Troop.acl">acl</a>
+## acl 
 Simple access control list
 
 ### Methods
@@ -42,7 +42,7 @@ Return or callback a boolean
 
 ***
 
-## <span id="#Troop.basicAuth">basicAuth</a>
+## basicAuth 
 
 Simple authentication plugin
 
@@ -107,7 +107,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 
 ***
 
-## <span id="#Troop.timestamp">timestamp</a>
+## timestamp 
 
 Adds a `created` and `modified` property to the schema, updating the timestamps as expected.
 
@@ -135,7 +135,7 @@ as well as a loss in precision, as it will return a timestamp in seconds.
 
 ***
 
-## <span id="#Troop.slugify">slugify</a>
+## slugify 
 
 Turn a string based field into a url friendly slug
 
@@ -179,7 +179,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.keywords">keywords</a>
+## keywords 
 
 Keyword extraction/creation plugin, can be used as a simple substitute of a full
 search indexing package.
@@ -236,7 +236,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.publish">publish</a>
+## publish 
 
 Plugin to publish/subscribe from a model or instance level, also enabling a model 
 to automatically publish changes on `init`, `save`, and `remove` methods.  Both models 
@@ -334,7 +334,7 @@ instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 
 ***
 
-## <span id="#Troop.pagination">pagination</a>
+## pagination 
 
 Simple query pagination routines.
 
@@ -430,7 +430,7 @@ a full set specified by the `limit` when this is the case.
 
 ***
 
-## <span id="#Troop.rest">rest</a>
+## rest 
 
 ### Options
 
@@ -441,7 +441,7 @@ Create a REST-ful controller for your models for use with flatiron/director, exp
 
 ***
 
-## <span id="#Troop.obfuscate">obfuscate</a>
+## obfuscate 
 
 ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
 any ObjectID that is found to prevent leaking any server information contained in the ID, will 
@@ -528,7 +528,7 @@ var obfuscated = foo.obfuscate
 
 Now we should have an obfuscated object like so
 
-```json
+``` js
 {
   _id: '0edaf91b2b5fa8c06413cdbf9ebed72a90a2c5ae4fe9b837d24865bd92c56ab2'
 , dbref: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
@@ -568,7 +568,7 @@ emptyFoo.deobfuscate = obfuscated
 
 Which should give us back the original object
 
-```json
+``` js
 { 
   _id: 4f1b234afe789543a3000008
 , dbref: 4f1b234afe789543a3000003
@@ -600,7 +600,7 @@ those manually
 
 ***
 
-## <span id="#Troop.merge">merge</a>
+## merge 
 
 Merge JSON into your object more easily.
 
@@ -611,7 +611,7 @@ instance.merge({title:'A new title', description:'A new description'}).save()
 
 ***
 
-## <span id="#Troop.getdbrefs">getdbrefs</a>
+## getdbrefs 
 
 Get the dbrefs from a schema
 
@@ -628,7 +628,7 @@ This plugin does not currently support nested paths
 
 ***
 
-## <span id="#Troop.removeDefaults">removeDefaults</a>
+## removeDefaults 
 
 Remove all of the default values from your model instance.
 
