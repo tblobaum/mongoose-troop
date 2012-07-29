@@ -6,7 +6,7 @@ A collection of handy plugins for mongoose
 ## Contents
 
 * [acl](#acl) (simple access control list)
-* [basicAuth](#basicAuth) (simple authentication and registration)
+* [basicAuth](#basicauth) (simple authentication and registration)
 * [timestamp](#timestamp) (automatic created and modified timestamps)
 * [slugify](#slugify) (url-friendly copies of string properties)
 * [keywords](#keywords) (search-friendly array of stemmed words from string properties)
@@ -15,7 +15,7 @@ A collection of handy plugins for mongoose
 * [rest](#rest) (http or rpc controller)
 * [obfuscate](#obfuscate) (objectID encryption / decryption)
 * [merge](#merge) (merge a document into another)
-* [removeDefaults](#removeDefaults) (remove default values from a document)
+* [removeDefaults](#removedefaults) (remove default values from a document)
 * [getdbrefs](#getdbrefs) (find all document DBRefs)
 
 The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/)
