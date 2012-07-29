@@ -5,18 +5,18 @@ A collection of handy plugins for mongoose
 
 ## Contents
 
-* [acl](#Troop.acl) (simple access control list)
-* [basicAuth](#Troop.basicAuth) (simple authentication and registration)
-* [timestamp](#Troop.timestamp) (automatic created and modified timestamps)
-* [slugify](#Troop.slugify) (url-friendly copies of string properties)
-* [keywords](#Troop.keywords) (search-friendly array of stemmed words from string properties)
-* [pubsub](#Troop.pubsub) (message passing)
-* [pagination](#Troop.pagination) (query pagination)
-* [rest](#Troop.rest) (http or rpc controller)
-* [obfuscate](#Troop.obfuscate) (objectID encryption / decryption)
-* [merge](#Troop.merge) (merge a document into another)
-* [removeDefaults](#Troop.removeDefaults) (remove default values from a document)
-* [getdbrefs](#Troop.getdbrefs) (find all document DBRefs)
+* [acl](#acl) (simple access control list)
+* [basicAuth](#basicAuth) (simple authentication and registration)
+* [timestamp](#timestamp) (automatic created and modified timestamps)
+* [slugify](#slugify) (url-friendly copies of string properties)
+* [keywords](#keywords) (search-friendly array of stemmed words from string properties)
+* [pubsub](#pubsub) (message passing)
+* [pagination](#pagination) (query pagination)
+* [rest](#rest) (http or rpc controller)
+* [obfuscate](#obfuscate) (objectID encryption / decryption)
+* [merge](#merge) (merge a document into another)
+* [removeDefaults](#removeDefaults) (remove default values from a document)
+* [getdbrefs](#getdbrefs) (find all document DBRefs)
 
 The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/)
 
