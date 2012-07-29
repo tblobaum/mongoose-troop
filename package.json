@@ -1,32 +1,49 @@
-{ "author": "Thomas Blobaum <tblobaum@gmail.com> (https://github.com/tblobaum/)"
-, "contributors": [{ 
-    "name": "Profulla Sadangi"
-  , "url": "https://github.com/butu5/"
-  }, {
-    "name": "Beau Sorensen"
-  , "url": "https://github.com/sorensen/"
-  }]
-, "name": "mongoose-troop"
-, "description": "plugins for mongoose"
-, "version": "0.0.6"
-, "homepage": "http://analyticsmachine.com"
-, "repository": {
-    "type": "git"
-  , "url": "git://github.com/tblobaum/mongoose-troop.git"
-  }
-, "scripts": {
+{
+  "name" : "mongoose-troop",
+  "version" : "0.0.7",
+  "description" : "a collection of plugins for mongoose",
+  "main" : "index.js",
+  "bin" : {},
+  "directories" : {
+    "test" : "test"
+  },
+  "scripts" : {
     "test": "make test && make clean"
-  }
-, "engines": {
-    "node": "0.x"
-  }
-, "dependencies": {
-    "directory": "0.0.x"
-  , "mongoose": "~2.4.10"
-  , "bcrypt": "~0.5.0"
-  , "redis": ">= 0.7.1"
-  }
-, "devDependencies": {
+  },
+  "optionalDependencies" : {
+    "bcrypt": "~0.5.0", 
+    "redis": ">= 0.7.1"
+  },
+  "dependencies" : {
+    "directory": "0.0.x", 
+    "mongoose": "~2.4.10"
+  },
+  "devDependencies" : {
     "mocha": "~0.10.0"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/tblobaum/mongoose-troop.git"
+  },
+  "homepage" : "https://github.com/tblobaum/mongoose-troop",
+  "keywords" : [
+    "redis",
+    "stream"
+  ],
+  "author" : {
+    "name" : "Thomas Blobaum",
+    "email" : "tblobaum@gmail.com",
+    "url" : "https://github.com/tblobaum/"
+  },
+  "contributors": [
+  { 
+    "name": "Profulla Sadangi", 
+    "url": "https://github.com/butu5/"
+  }, 
+  {
+    "name": "Beau Sorensen", 
+    "url": "https://github.com/sorensen/"
   }
+  ],
+  "license" : "MIT"
 }
