@@ -1,3 +1,6 @@
+services:
+  - redis-server
+  - mongodb
 language: node_js
 node_js:
   - 0.8
