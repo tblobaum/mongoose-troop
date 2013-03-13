@@ -70,7 +70,7 @@ describe('GetDBRefs', function () {
               .find()
               .populate('utilsArr')
               .populate('utilsOther')
-              .run(function (err, docs) {
+              .exec(function (err, docs) {
                 assert.strictEqual(err, null)
                 assert.strictEqual(docs.length, 1)
                 docs[0].getdbrefs(function (refs) {
