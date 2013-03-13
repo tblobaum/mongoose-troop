@@ -27,8 +27,18 @@
   },
   "homepage" : "https://github.com/tblobaum/mongoose-troop",
   "keywords" : [
-    "redis",
-    "stream"
+    "mongoose",
+    "troop",
+    "acl",
+    "auth",
+    "slugify",
+    "keywords",
+    "search",
+    "paginate",
+    "pagination",
+    "obfuscate",
+    "merge",
+    "getdbrefs"
   ],
   "author" : {
     "name" : "Thomas Blobaum",
