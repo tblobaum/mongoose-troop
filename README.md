@@ -18,7 +18,7 @@ A collection of handy plugins for mongoose
 * [removeDefaults](#removedefaults) (remove default values from a document)
 * [getdbrefs](#getdbrefs) (find all document DBRefs)
 
-The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/)
+<!-- The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/) -->
 
 ***
 
@@ -342,7 +342,7 @@ Simple query pagination routines.
 
 * `defaultQuery` Query to use if not specified (optional, default `{}`)
 * `defaultLimit` Results per page to use if not specified (optional, default `10`)
-* `defaultFields` Fields to use if not specified (optional, default `[]`)
+* `defaultFields` Fields to use if not specified (optional, default `{}`)
 * `remember` Remember the last options used for `query`, `limit`, and `fields` (optional, default `false`)
 
 ### Methods
@@ -406,7 +406,7 @@ FooModel.paginate({
   page: 2
 , query: { count: { $gt: 25 } }
 , limit: 25
-, fields: 'field1, field2'
+, fields: { 'field1: 1, field2': 1 }
 }, function(err, docs, count, pages, current) {
   
   // docs.length = 5
