@@ -98,7 +98,7 @@ describe('Pagination', function () {
     FooSchema.plugin(pagination, {
       defaultLimit: 20
     , defaultQuery: { count: { $gt: 10 } }
-    , defaultFields: ['count']
+    , defaultFields: { count : 1 }
     , remember: true
     })
     var BarModel = db.model('paginateBar', FooSchema)
