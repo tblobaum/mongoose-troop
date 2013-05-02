@@ -1,4 +1,3 @@
-
 # Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop) 
 
 A collection of handy plugins for mongoose
@@ -10,7 +9,7 @@ A collection of handy plugins for mongoose
 * [timestamp](#timestamp) (automatic created and modified timestamps)
 * [slugify](#slugify) (url-friendly copies of string properties)
 * [keywords](#keywords) (search-friendly array of stemmed words from string properties)
-* [pubsub](#pubsub) (message passing)
+* [pubsub](#publish) (message passing)
 * [pagination](#pagination) (query pagination)
 * [rest](#rest) (http or rpc controller)
 * [obfuscate](#obfuscate) (objectID encryption / decryption)
