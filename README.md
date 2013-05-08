@@ -409,8 +409,8 @@ FooModel.paginate({
 , query: { count: { $gt: 25 } }
 , limit: 25
 , fields: { 'field1: 1, field2': 1 }
-, sort: { field1: 1} // [Mongoose Sort](http://mongoosejs.com/docs/api.html#query_Query-sort)
-, populate: 'field2' // [Population](http://mongoosejs.com/docs/populate.html)
+, sort: { field1: 1}
+, populate: 'field2'
 }, function(err, docs, count, pages, current) {
   
   // docs.length = 5
@@ -431,6 +431,9 @@ Also, when on the last page, the plugin will return the trailing number of docum
 in the example above the `lastPage` method returned 5 documents, it will never return 
 a full set specified by the `limit` when this is the case.
 
+##### Mongoose documentations 
+* [Mongoose Sort](http://mongoosejs.com/docs/api.html#query_Query-sort) - sorting records
+* [Population](http://mongoosejs.com/docs/populate.html) - There are no joins in MongoDB but sometimes we still want references to documents in other collections.
 
 ***
 
