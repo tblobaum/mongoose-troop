@@ -343,7 +343,9 @@ Simple query pagination routines.
 * `defaultQuery` Query to use if not specified (optional, default `{}`)
 * `defaultLimit` Results per page to use if not specified (optional, default `10`)
 * `defaultFields` Fields to use if not specified (optional, default `{}`)
-* `remember` Remember the last options used for `query`, `limit`, and `fields` (optional, default `false`)
+* `defaultSort` Sort to use if not specified (optional, default `{}`)
+* `defaultPopulate` Population to use if not specified (optional, default `{}`)
+* `remember` Remember the last options used for `query`, `limit`, `sort`, `population` and `fields` (optional, default `false`)
 
 ### Methods
 
@@ -407,6 +409,8 @@ FooModel.paginate({
 , query: { count: { $gt: 25 } }
 , limit: 25
 , fields: { 'field1: 1, field2': 1 }
+, sort: { field1: 1} // [Mongoose Sort](http://mongoosejs.com/docs/api.html#query_Query-sort)
+, populate: 'field2' // [Population](http://mongoosejs.com/docs/populate.html)
 }, function(err, docs, count, pages, current) {
   
   // docs.length = 5
