@@ -372,6 +372,12 @@ var FooSchema = new mongoose.Schema({
 
 FooSchema.plugin(troop.pagination)
 
+// OR with default settings
+FooSchema.plugin(troop.pagination, {
+  defaultPopulate: 'categories', 
+  defaultSort: { name: 1 }
+})
+
 var FooModel = mongoose.model('foo', FooSchema)
 
 FooModel.paginate({ page: 1 }, function (err, docs, count, pages, current) {
