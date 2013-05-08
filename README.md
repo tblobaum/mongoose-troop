@@ -368,17 +368,24 @@ var mongoose = require('mongoose')
 var FooSchema = new mongoose.Schema({
   name: String
 , count: Number
+, category: { type: mongoose.Schema.Types.ObjectId, ref: 'cat' }
 })
 
 FooSchema.plugin(troop.pagination)
 
 // OR with default settings
 FooSchema.plugin(troop.pagination, {
-  defaultPopulate: 'categories', 
+  defaultPopulate: 'category', 
   defaultSort: { name: 1 }
 })
 
 var FooModel = mongoose.model('foo', FooSchema)
+
+var CatSchema = new mongoose.Schema({
+  name: String
+})
+
+var CatModel = mongoose.model('cat', CatSchema)
 
 FooModel.paginate({ page: 1 }, function (err, docs, count, pages, current) {
 
@@ -414,7 +421,7 @@ FooModel.paginate({
   page: 2
 , query: { count: { $gt: 25 } }
 , limit: 25
-, fields: { 'field1: 1, field2': 1 }
+, fields: { field1: 1, field2: 1 }
 , sort: { field1: 1}
 , populate: 'field2'
 }, function(err, docs, count, pages, current) {
