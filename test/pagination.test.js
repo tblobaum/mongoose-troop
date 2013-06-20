@@ -9,6 +9,7 @@ var util = require('util')
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
 
+idOfLastFooDoc = null;
 // Run tests
 describe('Pagination', function () {
   describe('#default()', function () {
@@ -27,7 +28,10 @@ describe('Pagination', function () {
         var instance = new FooModel({ count: x })
         instance.save(function(err, doc) {
           assert.strictEqual(err, null)
-          if (doc.count == 55) done()
+          if (doc.count == 55) {
+            idOfLastFooDoc = doc._id; 
+            done()
+          }
         })
       }
     })
@@ -94,11 +98,14 @@ describe('Pagination', function () {
     var FooSchema = new Schema({ 
       count: Number
     , name: String
+    , foo: { type: Schema.Types.ObjectId, ref: 'paginateFoo' }
     })
     FooSchema.plugin(pagination, {
       defaultLimit: 20
     , defaultQuery: { count: { $gt: 10 } }
-    , defaultFields: { count : 1 }
+    , defaultFields: { count : 1, foo: 1 }
+    , defaultSort: { count: 1 }
+    , defaultPopulate: 'foo'
     , remember: true
     })
     var BarModel = db.model('paginateBar', FooSchema)
@@ -114,6 +121,7 @@ describe('Pagination', function () {
         var instance = new BarModel({ 
           count: x
         , name: 'foobar'
+        , foo: idOfLastFooDoc
         })
         instance.save(function(err, doc) {
           assert.strictEqual(err, null)
@@ -165,8 +173,44 @@ describe('Pagination', function () {
         assert.strictEqual(pages, 9)
         assert.strictEqual(current, 7)
         assert.strictEqual(docs.length, 5)
+        assert.strictEqual(docs[0].foo.count, 55)
         done()
       })
     })
+
+    it('should paginate with ascending sort and population', function (done) {
+      BarModel.paginate({ 
+        page: 2
+      , limit: 5
+      , sort: { count: 1 }
+      }, function (err, docs, total, pages, current) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(total, 45)
+        assert.strictEqual(pages, 9)
+        assert.strictEqual(current, 2)
+        assert.strictEqual(docs.length, 5)
+        assert.strictEqual(docs[0].count, 16)
+        assert.strictEqual(docs[0].foo.count, 55)
+        done()
+      })
+    })
+
+    it('should paginate with descending sort and population', function (done) {
+      BarModel.paginate({ 
+        page: 2
+      , limit: 5
+      , sort: { count: -1 }
+      }, function (err, docs, total, pages, current) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(total, 45)
+        assert.strictEqual(pages, 9)
+        assert.strictEqual(current, 2)
+        assert.strictEqual(docs.length, 5)
+        assert.strictEqual(docs[0].count, 50)
+        assert.strictEqual(docs[0].foo.count, 55)
+        done()
+      })
+    })
+
   })
 })
