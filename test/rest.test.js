@@ -147,7 +147,6 @@ describe('REST', function () {
       }, function (err, docs) {
         assert.strictEqual(err, null)
         assert.strictEqual(docs.length, 10)
-        assert.strictEqual(docs[0].count, 46)
         done()
       })
     })
