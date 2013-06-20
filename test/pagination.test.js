@@ -71,6 +71,52 @@ describe('Pagination', function () {
       })
     })
 
+    it('should paginate with null query', function (done) {
+      FooModel.paginate({
+        query: null
+      , page: 1
+      , limit: 25
+      }, function (err, docs, total, pages, current) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(total, 55)
+        assert.strictEqual(pages, 3)
+        assert.strictEqual(current, 1)
+        assert.strictEqual(docs.length, 25)
+        done()
+      })
+    })
+
+    it('should paginate with null object query', function (done) {
+      FooModel.paginate({
+        query: {}
+      , page: 1
+      , limit: 25
+      }, function (err, docs, total, pages, current) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(total, 55)
+        assert.strictEqual(pages, 3)
+        assert.strictEqual(current, 1)
+        assert.strictEqual(docs.length, 25)
+        done()
+      })
+    })
+
+    it('should paginate with query', function (done) {
+      FooModel.paginate({
+        query: { count: 10 }
+      , page: 1
+      , limit: 25
+      }, function (err, docs, total, pages, current) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(total, 1)
+        assert.strictEqual(pages, 1)
+        assert.strictEqual(current, 1)
+        assert.strictEqual(docs.length, 1)
+        assert.strictEqual(docs[0].count, 10)
+        done()
+      })
+    })
+
     it('should go the last page', function (done) {
       FooModel.lastPage(function (err, docs, total, pages, current) {
         assert.strictEqual(err, null)
