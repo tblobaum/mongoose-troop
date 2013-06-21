@@ -343,7 +343,9 @@ Simple query pagination routines.
 * `defaultQuery` Query to use if not specified (optional, default `{}`)
 * `defaultLimit` Results per page to use if not specified (optional, default `10`)
 * `defaultFields` Fields to use if not specified (optional, default `{}`)
-* `remember` Remember the last options used for `query`, `limit`, and `fields` (optional, default `false`)
+* `defaultSort` Sort to use if not specified (optional, default `{}`)
+* `defaultPopulate` Population to use if not specified (optional, default `{}`)
+* `remember` Remember the last options used for `query`, `limit`, `sort`, `population` and `fields` (optional, default `false`)
 
 ### Methods
 
@@ -366,11 +368,24 @@ var mongoose = require('mongoose')
 var FooSchema = new mongoose.Schema({
   name: String
 , count: Number
+, category: { type: mongoose.Schema.Types.ObjectId, ref: 'cat' }
 })
 
 FooSchema.plugin(troop.pagination)
 
+// OR with default settings
+FooSchema.plugin(troop.pagination, {
+  defaultPopulate: 'category', 
+  defaultSort: { name: 1 }
+})
+
 var FooModel = mongoose.model('foo', FooSchema)
+
+var CatSchema = new mongoose.Schema({
+  name: String
+})
+
+var CatModel = mongoose.model('cat', CatSchema)
 
 FooModel.paginate({ page: 1 }, function (err, docs, count, pages, current) {
 
@@ -406,7 +421,9 @@ FooModel.paginate({
   page: 2
 , query: { count: { $gt: 25 } }
 , limit: 25
-, fields: { 'field1: 1, field2': 1 }
+, fields: { field1: 1, field2: 1 }
+, sort: { field1: 1}
+, populate: 'field2'
 }, function(err, docs, count, pages, current) {
   
   // docs.length = 5
@@ -427,6 +444,9 @@ Also, when on the last page, the plugin will return the trailing number of docum
 in the example above the `lastPage` method returned 5 documents, it will never return 
 a full set specified by the `limit` when this is the case.
 
+##### Mongoose documentations 
+* [Mongoose Sort](http://mongoosejs.com/docs/api.html#query_Query-sort) - sorting records
+* [Population](http://mongoosejs.com/docs/populate.html) - There are no joins in MongoDB but sometimes we still want references to documents in other collections.
 
 ***
 

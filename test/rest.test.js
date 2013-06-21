@@ -123,5 +123,32 @@ describe('REST', function () {
         done()
       })
     })
+
+    it('should search with sort ascendant', function (done) {
+      FooModel.search({
+        query: {}
+      , limit: 10
+      , page: 2
+      , sort: { count: 1 }
+      }, function (err, docs) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(docs.length, 10)
+        assert.strictEqual(docs[0].count, 12)
+        done()
+      })
+    })
+
+    it('should search with sort decrescent', function (done) {
+      FooModel.search({
+        query: {}
+      , limit: 10
+      , page: 2
+      , sort: { count: -1 }
+      }, function (err, docs) {
+        assert.strictEqual(err, null)
+        assert.strictEqual(docs.length, 10)
+        done()
+      })
+    })
   })
 })

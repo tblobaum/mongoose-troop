@@ -1,6 +1,6 @@
 {
   "name" : "mongoose-troop",
-  "version" : "0.0.8",
+  "version" : "0.0.9",
   "description" : "a collection of plugins for mongoose",
   "main" : "index.js",
   "bin" : {},
@@ -11,12 +11,12 @@
     "test": "make test && make clean"
   },
   "optionalDependencies" : {
-    "bcrypt": "~0.7.0",
+    "bcrypt": "~0.7.5",
     "redis": ">= 0.7.1"
   },
   "dependencies" : {
     "directory": "0.0.x", 
-    "mongoose": "~3.5.8"
+    "mongoose": "~3.6.9"
   },
   "devDependencies" : {
     "mocha": "~1.8.2"
@@ -53,6 +53,10 @@
   {
     "name": "Beau Sorensen", 
     "url": "https://github.com/sorensen/"
+  },
+  {
+    "name": "Janos Meszaros", 
+    "url": "https://github.com/janez89/"
   }
   ],
   "license" : "MIT"
