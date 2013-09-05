@@ -39,11 +39,11 @@ describe('Publish', function () {
     it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.methods.publish, 'function')
       assert.strictEqual(typeof FooSchema.methods.getChannel, 'function')
-      assert.strictEqual(typeof FooSchema.methods.on, 'function')
+      assert.strictEqual(typeof FooSchema.methods.mq, 'function')
       assert.strictEqual(typeof FooSchema.methods.subscribe, 'function')
       assert.strictEqual(typeof FooSchema.methods.unsubscribe, 'function')
       assert.strictEqual(typeof FooSchema.statics.getChannel, 'function')
-      assert.strictEqual(typeof FooSchema.statics.on, 'function')
+      assert.strictEqual(typeof FooSchema.statics.mq, 'function')
       assert.strictEqual(typeof FooSchema.statics.subscribe, 'function')
       assert.strictEqual(typeof FooSchema.statics.unsubscribe, 'function')
       done()
@@ -80,7 +80,7 @@ describe('Publish', function () {
     })
 
     it('should publish the instance', function (done) {
-      FooModel.on('message', function (chan, message) {
+      FooModel.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
@@ -99,7 +99,7 @@ describe('Publish', function () {
     })
 
     it('should publish the instance to itself', function (done) {
-      foo.on('message', function (chan, message) {
+      foo.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
@@ -144,11 +144,11 @@ describe('Publish', function () {
     it('should have custom properties', function (done) {
       assert.strictEqual(typeof FooSchema.methods.publish, 'function')
       assert.strictEqual(typeof FooSchema.methods.getChannel, 'function')
-      assert.strictEqual(typeof FooSchema.methods.on, 'function')
+      assert.strictEqual(typeof FooSchema.methods.mq, 'function')
       assert.strictEqual(typeof FooSchema.methods.subscribe, 'function')
       assert.strictEqual(typeof FooSchema.methods.unsubscribe, 'function')
       assert.strictEqual(typeof FooSchema.statics.getChannel, 'function')
-      assert.strictEqual(typeof FooSchema.statics.on, 'function')
+      assert.strictEqual(typeof FooSchema.statics.mq, 'function')
       assert.strictEqual(typeof FooSchema.statics.subscribe, 'function')
       assert.strictEqual(typeof FooSchema.statics.unsubscribe, 'function')
       done()
@@ -185,7 +185,7 @@ describe('Publish', function () {
     })
 
     it('should publish the instance', function (done) {
-      BarModel.on('message', function (chan, message) {
+      BarModel.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
@@ -211,7 +211,7 @@ describe('Publish', function () {
     })
 
     it('should publish the instance to itself', function (done) {
-      bar.on('message', function (chan, message) {
+      bar.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
@@ -255,7 +255,7 @@ describe('Publish', function () {
       , expectedChan = 'breaking-bad'
     
     it('should trigger a subscribe event', function (done) {
-      BlahModel.on('subscribe', function (chan, count) {
+      BlahModel.mq('subscribe', function (chan, count) {
         assert.strictEqual(chan, expectedChan)
         assert.strictEqual(count, 1)
         done()
@@ -267,7 +267,7 @@ describe('Publish', function () {
     })
 
     it('should publish on save', function (done) {
-      BlahModel.on('message', function (chan, message) {
+      BlahModel.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
@@ -286,7 +286,7 @@ describe('Publish', function () {
     })
 
     it('should trigger an unsubscribe event', function (done) {
-      BlahModel.on('unsubscribe', function (chan, count) {
+      BlahModel.mq('unsubscribe', function (chan, count) {
         assert.strictEqual(chan, expectedChan)
         assert.strictEqual(count, 0)
         done()
@@ -312,7 +312,7 @@ describe('Publish', function () {
   //     , expectedChan = 'publishtests'
 
   //   it('should publish on init', function (done) {
-  //     TestModel.on('message', function (chan, message) {
+  //     TestModel.mq('message', function (chan, message) {
   //       var msg = JSON.parse(message)
   //       assert.strictEqual(typeof message, 'string')
   //       assert.strictEqual(typeof msg, 'object')
@@ -356,7 +356,7 @@ describe('Publish', function () {
       , expectedChan = 'publishhellos'
     
     it('should publish on remove', function (done) {
-      HelloModel.on('message', function (chan, message) {
+      HelloModel.mq('message', function (chan, message) {
         var msg = JSON.parse(message)
         assert.strictEqual(typeof message, 'string')
         assert.strictEqual(typeof msg, 'object')
