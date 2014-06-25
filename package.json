@@ -1,6 +1,6 @@
 {
   "name" : "mongoose-troop",
-  "version" : "0.0.8",
+  "version" : "0.0.9",
   "description" : "a collection of plugins for mongoose",
   "main" : "index.js",
   "bin" : {},
@@ -15,7 +15,7 @@
     "redis": ">= 0.7.1"
   },
   "dependencies" : {
-    "directory": "0.0.x", 
+    "directory": "~0.1.0", 
     "mongoose": "~3.5.8"
   },
   "devDependencies" : {
